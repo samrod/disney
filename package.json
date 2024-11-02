@@ -1,4 +1,32 @@
 {
   "name": "disney",
-  "packageManager": "yarn@4.5.0"
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --sourcemap --outfile=dist/index.js --watch",
+    "copy-html": "chokidar 'src/**/*.html' -c 'cp src/*.html dist/'",
+    "build:scss": "sass src/styles.scss dist/styles.css --watch",
+    "build:tailwind": "postcss dist/styles.css -o dist/styles.css --watch",
+    "serve": "live-server dist --cors --open=.",
+    "dev": "concurrently \"yarn build\" \"yarn copy-html\" \"yarn build:scss --watch\" \"yarn serve\""
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv-flow": "^4.1.0",
+    "live-server": "^1.2.2",
+    "lodash": "^4.17.21",
+    "sass": "^1.80.5",
+    "tailwindcss": "^3.4.14"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.4",
+    "@types/live-server": "^1",
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^22.8.6",
+    "autoprefixer": "^10.4.20",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^9.0.1",
+    "esbuild": "^0.17.12",
+    "postcss": "^8.4.47",
+    "typescript": "^5.6.3"
+  },
+  "version": "4.5.0"
 }
