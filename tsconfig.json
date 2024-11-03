@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "allowJs": true,
+    "checkJs": false,
+    "paths": {
+      "*": [
+        "./node_modules/*",
+        "./.yarn/*",
+      ]
+    },
+    "lib": [
+      "dom.iterable",
+      "esnext",
+      "dom"
+    ],
+    "outDir": "./dist",
+    "rootDir": "./",
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
+
