@@ -4,19 +4,22 @@ import { StoreState } from "./types";
 import { $, $$, restrictToRange } from "./utils";
 
 export const navControl = (e: KeyboardEvent) => {
-  e.preventDefault();
-
+  
   switch (e.key) {
     case "ArrowDown":
+      e.preventDefault();
       selectRow(1);
       break;
     case "ArrowUp":
+      e.preventDefault();
       selectRow(-1);
       break;
     case "ArrowLeft":
+      e.preventDefault();
       selectTile(-1);
       break;
     case "ArrowRight":
+      e.preventDefault();
       selectTile(1);
       break;
   }
@@ -39,7 +42,7 @@ const selectRow = (step: number) => {
 
 export const updateSelectedItem = ({ activeCategoryIndex, activeItemIndex }: StoreState, preState?: StoreState) => {
   if (!preState) {
-    $('.slider[data-index="0"] a[data-index="0"]').focus();
+    $('.slider[data-index="0"] a[data-index="0"]')?.focus();
     return;
   }
   if (activeItemIndex !== preState.activeItemIndex || activeCategoryIndex !== preState.activeCategoryIndex ) {

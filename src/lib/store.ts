@@ -1,8 +1,11 @@
+import { isEmpty } from "lodash";
 import { createStore } from "zustand/vanilla";
 import { StoreState } from "./types";
 import { fetchList } from "./api";
-import { $, update } from "./utils";
+import { $, filterValidContainers, update } from "./utils";
 import { updateSelectedItem } from "./events";
+import { consoleLog } from "./logging";
+import { config } from "../../config";
 
 const useStore = createStore<StoreState>((set, get) => ({
   containers: [],
@@ -18,10 +21,12 @@ const useStore = createStore<StoreState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const data = await fetchList();
-      console.log("Fetched containers: ", data.containers);
-      set({ containers: data.containers, loading: false });
+      const validatedContainers = await filterValidContainers(data.containers);
+      consoleLog("validatedData: ", validatedContainers);
+      set({ containers: validatedContainers, loading: false });
     } catch (error) {
       set({ loading: false, error: error.message });
+      consoleLog("fetchContainers", `Unable to retrieve data from ${config.API_DOMAIN}`, "error");
     }
   },
 

@@ -1,15 +1,15 @@
 import Handlebars from "handlebars";
-import { Container } from "./types";
+import { Container, StoreState } from "./types";
 import { $, bindEvent, compileTemplate, getItemImage, getItemTitle } from "./utils";
 import "../styles.scss";
 import { navControl, updateSelectedItem } from "./events";
 import useStore from "./store";
 
-export const renderContainers = (containers: Container[]) => {
+export const renderContainers = (state: StoreState) => {
   const containerElement = $("#tmpl-containers");
   if (!containerElement) return;
 
-  $("#root").innerHTML += compileTemplate(containerElement, containers);
+  $("#root").innerHTML += compileTemplate(containerElement, state);
   bindEvent({ element: document.body, event: "keydown", handler: navControl });
   updateSelectedItem(useStore.getState());
 };
