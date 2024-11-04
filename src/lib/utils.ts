@@ -1,13 +1,23 @@
+import { produce } from 'immer';
 import Handlebars from "handlebars";
 
 export const $ = (selector: string): HTMLElement => {
   return document.querySelector(selector);
 };
 
-export const compileTemplate = (templateId: string, data: {}) => {
-  const templateSource = $(templateId).innerHTML;
-  const template = Handlebars.compile(templateSource)
-  return template(data);
+export const $$ = (selector: string): NodeListOf<Element> => {
+  return document.querySelectorAll(selector);
+};
+
+type UpdateTypes = {
+  [key: string]: boolean | string | {} | [];
+}
+
+export const update = (set, func: (state: UpdateTypes) => void) => set(produce(func));
+
+export const compileTemplate = (template: HTMLElement, data: {}) => {
+  const _template = Handlebars.compile(template.innerHTML)
+  return _template(data);
 };
 
 export const getItemTitle = ({ title }) => {
@@ -33,3 +43,17 @@ export const getItemImage = (image, type, aspect) => {
     imageType?.collection?.default.url
   );
 };
+
+export const restrictToRange = (value: number, max: number): number => {
+  return Math.max(Math.min(value, max - 1), 0);
+};
+
+interface BindParams {
+  event: string;
+  element: HTMLElement | Window;
+  handler: (e: Event) => void;
+  options?: AddEventListenerOptions
+}
+export function bindEvent({ element, event, handler, options = {} }: BindParams) {
+  element.addEventListener(event, handler, options);
+}

@@ -13,7 +13,7 @@ body {
 }
 
 .page {
-  @apply m-auto w-11/12 text-white;
+  @apply ml-auto w-11/12 text-white;
 }
 
 .category {
@@ -21,15 +21,29 @@ body {
 }
 
 .item-tile {
-  @apply mx-2 my-4 overflow-hidden rounded-sm;
+  @apply mx-2 my-4 overflow-hidden rounded-sm border-2 border-transparent;
+  transition: 
+    border 0.1s ease-out,
+    transform 0.5s ease-out;
+
+    &:first-child {
+    @apply ml-0;
+  }
+  &:focus {
+    @apply border-white rounded-lg;
+    transform: scale(1.1);
+    transition: 
+    border 0.1s ease-in,
+    transform 0.35s cubic-bezier(0.12, 3.04, 0.63, -0.09);
+  }
   box-shadow: 0 0 20px #000C;
-  border: 1px solid black;
   flex: 0 0 auto;
   img {
+    border: 1px solid black;
     width: 200px;
   }
 }
 
 .slider {
-  @apply flex flex-nowrap overflow-hidden;
+  @apply px-4 flex flex-nowrap overflow-hidden -ml-4;
 }
