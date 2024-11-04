@@ -18,6 +18,7 @@ export interface Container {
 }
 
 export interface StoreState {
+  items: {};
   containers: Container[];
   loading: boolean;
   error: string | null;
@@ -26,6 +27,7 @@ export interface StoreState {
   trigger: null| string;
 
   fetchContainers: () => Promise<void>;
+  setItem: (id: string, data: {}) => void;
   setActiveItemIndex: (index: number) => void;
   setActiveCategoryIndex: (index: number) => void;
 }

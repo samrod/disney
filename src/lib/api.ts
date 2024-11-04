@@ -22,6 +22,6 @@ export const fetchList = async () => {
 };
 
 export const fetchSet = async (ref: string) => {
-  const { data } = await fetchData(`${config.API_DOMAIN}/sets/${ref}`);
+  const { data } = await fetchData(`${config.API_DOMAIN}/sets/${ref}.json`);
   return data;
 };

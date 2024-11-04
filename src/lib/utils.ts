@@ -1,6 +1,8 @@
 import { produce } from 'immer';
 import Handlebars from "handlebars";
 import { consoleLog } from './logging';
+import { fetchSet } from './api';
+import useStore from './store';
 
 export const $ = (selector: string): HTMLElement => {
   return document.querySelector(selector);
@@ -19,6 +21,13 @@ export const update = (set, func: (state: UpdateTypes) => void) => set(produce(f
 export const compileTemplate = (template: HTMLElement, data: {}) => {
   const _template = Handlebars.compile(template.innerHTML)
   return _template(data);
+};
+
+export const getItemId = (item) => {
+  if (!item) {
+    return "";
+  }
+  return item.contentId || item.collectionId;
 };
 
 export const getItemTitle = (item) => {
@@ -62,15 +71,21 @@ export const restrictToRange = (value: number, max: number): number => {
 
 interface BindParams {
   event: string;
-  element: HTMLElement | Window;
+  element: HTMLElement | Window | NodeListOf<Element>;
   handler: (e: Event) => void;
   options?: AddEventListenerOptions
 }
 export function bindEvent({ element, event, handler, options = {} }: BindParams) {
-  element.addEventListener(event, handler, options);
+  if (element instanceof HTMLElement || element instanceof Window) {
+    element.addEventListener(event, handler, options);
+    return;
+  }
+  if (element instanceof NodeList) {
+    element.forEach((el) => el.addEventListener(event, handler, options));
+  }
 }
 
-export const validateImageUrl = (url: string) => {
+const validateImageUrl = (url: string) => {
   return new Promise((resolve) => {
     if (!url) {
       resolve(false);
@@ -82,21 +97,42 @@ export const validateImageUrl = (url: string) => {
   });
 };
 
-export const filterValidContainers = async (containers: any[]): Promise<any[]> => {
-  return Promise.all(containers.map(async (container) => {
-    if (container.set?.items && Array.isArray(container.set.items)) {
-      const validatedItems = await Promise.all(container.set.items.map(async (item) => {
-        const imageSrc = getItemImage(item, "tile", "1.78");
-        const isValid = await validateImageUrl(imageSrc);
-        if (isValid) {
-          return item;
-        }
-        consoleLog("filterValidContainers", `Error validating image URL for ${getItemTitle(item)}: ${imageSrc}`, "warn");
-        return null;
-      }));
-      container.set.items = validatedItems.filter(item => item !== null);
-      return container.set.items.length > 0 ? container : null;
+const removeMissingImages = (items) => {
+  const { setItem } = useStore.getState();
+  return items.map(async (item) => {
+    const imageSrc = getItemImage(item, "tile", "1.78");
+    const isValid = await validateImageUrl(imageSrc);
+    if (isValid) {
+      setItem(item?.contentId || item?.collectionId, item);
+      return item;
     }
+    consoleLog("filterValidContainers", `Error validating image URL for ${getItemTitle(item)}: ${imageSrc}`, "warn");
     return null;
-  })).then(filteredContainers => filteredContainers.filter(container => container !== null)); // Filter out null containers
+  })
 };
+
+const filterNormalizedData = async (container: any[]): Promise<any[]> => {
+  const validatedItems = await Promise.all(removeMissingImages(container.set.items));
+  container.set.items = validatedItems.filter(item => item !== null);
+  return container.set.items.length > 0 ? container : null;
+};
+
+export const fetchAndNormalizeData = (data) => (
+  Promise.all(
+    data.containers.map(async (_container) => {
+      let container;
+      if (_container.set.refId) {
+        const response = await fetchSet(_container.set.refId)
+        container = {
+          ..._container,
+          set: response.CuratedSet
+            || response.TrendingSet
+            || response.PersonalizedCuratedSet
+        };
+      } else {
+        container = _container;
+      }
+      return filterNormalizedData(container);
+    })
+  )
+);

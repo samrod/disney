@@ -2,30 +2,30 @@ import { getActiveResourcesInfo } from "process";
 import useStore from "./store";
 import { StoreState } from "./types";
 import { $, $$, restrictToRange } from "./utils";
+import { fetchSet } from "./api";
 
-export const navControl = (e: KeyboardEvent) => {
-  
+export const navControl = (e: KeyboardEvent) => {  
   switch (e.key) {
     case "ArrowDown":
       e.preventDefault();
-      selectRow(1);
+      highlightUpDown(1);
       break;
     case "ArrowUp":
       e.preventDefault();
-      selectRow(-1);
+      highlightUpDown(-1);
       break;
     case "ArrowLeft":
       e.preventDefault();
-      selectTile(-1);
+      highlightSidways(-1);
       break;
     case "ArrowRight":
       e.preventDefault();
-      selectTile(1);
+      highlightSidways(1);
       break;
   }
 };
 
-const selectTile = (step: number) => {
+const highlightSidways = (step: number) => {
   const activeItem = document.activeElement;
   const { activeItemIndex, setActiveItemIndex } = useStore.getState();
   const totalItems = Number(activeItem.parentNode?.children.length);
@@ -33,7 +33,7 @@ const selectTile = (step: number) => {
   setActiveItemIndex(newItemIndex);
 };
 
-const selectRow = (step: number) => {
+const highlightUpDown = (step: number) => {
   const { activeCategoryIndex, setActiveCategoryIndex } = useStore.getState();
   const totalCategories = $$(".category").length;
   const newCategoryIndex = restrictToRange(activeCategoryIndex + step, totalCategories);
@@ -49,4 +49,11 @@ export const updateSelectedItem = ({ activeCategoryIndex, activeItemIndex }: Sto
     const selector = `.slider[data-index="${activeCategoryIndex}"] a[data-index="${activeItemIndex}"]`;
     $(selector)?.focus();    
   }
+};
+
+export const selectTile = async (e: MouseEvent) => {
+  e.preventDefault();
+  const { id } = e.target?.dataset;
+  const { items } = useStore.getState();
+  console.log(items[id]);
 };

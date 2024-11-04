@@ -25,7 +25,11 @@ h4 { font-size: 1.3rem; }
 }
 
 .category {
-  @apply py-4;
+  @apply py-2;
+}
+
+.slider {
+  @apply px-4 pb-2 flex flex-nowrap overflow-hidden -ml-4;
 }
 
 .item-tile {
@@ -52,6 +56,3 @@ h4 { font-size: 1.3rem; }
   }
 }
 
-.slider {
-  @apply px-4 flex flex-nowrap overflow-hidden -ml-4;
-}
