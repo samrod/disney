@@ -1,0 +1,103 @@
+#modal {
+  @apply 
+    hidden fixed opacity-0 justify-center items-center size-full top-0 left-0
+    backdrop-blur-md bg-gradient-to-t from-black text-white;
+
+  &.hide {
+    @apply flex;
+    .modal-content { background-size: 100%;}
+    .logo {
+      @apply opacity-100;
+      background-position: 0px 0px;
+    }
+  }
+  &.active {
+    @apply flex;
+    .modal-content { background-size: 110%;}
+    .logo {
+      @apply opacity-0;
+      background-position: 0px -90px;
+    }
+  }
+  &.visible {
+    @apply opacity-100;
+    .modal-content { background-size: 100%;}
+    .logo {
+      @apply opacity-100;
+      background-position: 0px 0px;
+    }
+  }
+  transition: opacity 0.25s ease-in;
+}
+
+.modal-content {
+  @apply flex relative w-10/12 max-w-[1280px] aspect-video bg-no-repeat rounded-lg overflow-hidden;
+  transition: background-size 3s cubic-bezier(0, 1, 1, 1);
+}
+
+.hero-overlay {
+  @apply absolute top-0 left-0 z-0 size-full bg-gradient-to-r from-black opacity-75;
+}
+
+.logo {
+  @apply absolute z-10 w-8/12 aspect-video bg-cover bg-no-repeat border-0;
+  transition:
+    opacity 1s 0.5s ease-in,
+    background-position 1s 0.25s cubic-bezier(0, 1, 1, 1);
+}
+
+.info {
+  @apply flex flex-row absolute z-10 p-8 bottom-0 items-center;
+  p {
+    &::before {
+      @apply mx-3 text-white;
+      content: "\2022";
+    }
+    &:first-child::before {
+      @apply mx-0 text-white;
+      content: "";
+    }
+  } 
+}
+
+.rating {
+  @apply inline-flex px-2 items-center border-[1px] rounded-sm font-black;
+  font-family:'Times New Roman', Times, serif;
+}
+
+.video {
+  @apply absolute bottom-[10%] right-[10%] z-10 aspect-video w-[50%] opacity-0;
+  transition: opacity 0.5s ease-in;
+  &.playing {
+    @apply opacity-100;
+  }
+}
+
+.button.playButton {
+  @apply uppercase font-bold w-[120px];
+  &.play::before {
+    @apply mr-2;
+    content: "\25B6";
+    width: 20px;
+  }
+
+  &.pause::before {
+    @apply mr-2;
+    content: "=";
+    width: 20px;
+    transform: rotate(90deg);
+  }
+}
+
+.info {
+  &[data-playing="false"] .pause {
+    @apply hidden;
+  }
+  &[data-playing="true"] .play {
+    @apply hidden;
+  }
+}
+
+.actions {
+  @apply ml-4;
+}

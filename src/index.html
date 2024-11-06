@@ -9,7 +9,7 @@
   <body>
     <script id="tmpl-tile" type="text/x-handlebars-template">
       <a href="#" class="item-tile" data-id="{{getItemId item}}" data-type="tile" data-index="{{@index}}">
-        <img src="{{getItemImage item 'tile' '1.78'}}" alt="{{getItemTitle item}}" width="100" height="50" />
+        <img src="{{formatImageSrc item.assets.tile.id 200 jpeg}}" alt="{{getItemTitle item}}" width="100" height="50" />
       </a>
     </script>
 
@@ -41,6 +41,31 @@
       {{/if}}
     </script>
 
-    <div id="root"></div>
+    <script id="tmpl-modal" type="text/x-handlebars-template">
+      <div class="modal-content" style="background-image: url({{formatImageSrc this.assets.background.id 1200 jpeg}})">
+        <div class="hero-overlay"></div>
+        <div class="logo" style="background-image: url('{{formatImageSrc this.assets.logo.id 600 'png'}}');""></div>
+        <h4 class="info" data-playing="false">
+          {{#if this.ratings.[0].value}}
+            <div class="rating">{{this.ratings.[0].value}}</div>
+          {{/if}}
+          {{#if this.releases.[0].releaseYear}}
+            <p>{{this.releases.[0].releaseYear}}</p>
+          {{/if}}
+          {{#if this.videoArt}}
+            <div class="actions">
+              <button class="playButton play button" autofocus>Play</button>
+              <button class="playButton pause button" autofocus>Pause</button>
+            </div>
+          {{/if}}
+        </h4>
+        {{#if this.videoArt}}
+          <video class="video" autofocus inline src="{{this.videoArt.[0].mediaMetadata.urls.[0].url}}" />
+        {{/if}}
+      </div>
+    </script>
+
+    <div id="screen"></div>
+    <div id="modal"></div>
   </body>
 </html>

@@ -1,6 +1,12 @@
+@use "modal";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background-color: #023;
@@ -13,8 +19,9 @@ h2 { font-size: 2rem; }
 h3 { font-size: 1.6rem; }
 h4 { font-size: 1.3rem; }
 
-#root {
-  @apply flex flex-col;
+#screen {
+  @apply flex flex-col aspect-video w-[1080px];
+  // border: 1px solid red;
 }
 
 .page {
@@ -29,30 +36,40 @@ h4 { font-size: 1.3rem; }
 }
 
 .slider {
-  @apply px-4 pb-2 flex flex-nowrap overflow-hidden -ml-4;
+  @apply -ml-6 px-6 pt-2 pb-6 flex flex-nowrap overflow-hidden;
+  scroll-behavior: smooth;
 }
 
 .item-tile {
-  @apply mx-3 my-4 overflow-hidden rounded-sm border-2 border-transparent;
+  @apply mx-3 my-2 overflow-hidden rounded-sm;
+  box-shadow: 0px 3px 10px #000C;
+  flex: 0 0 auto;
   transition: 
     border 0.1s ease-out,
+    box-shadow 0.5s ease-out,
     transform 0.5s ease-out;
 
     &:first-child {
     @apply ml-0;
   }
   &:focus {
-    @apply border-white rounded-lg;
+    @apply outline-white outline-2 outline-offset-4 rounded-lg;
     transform: scale(1.1);
+    box-shadow: 0px 7px 25px #000C;
     transition: 
     border 0.1s ease-in,
+    box-shadow 0.35s cubic-bezier(0.12, 3.04, 0.63, -0.09),
     transform 0.35s cubic-bezier(0.12, 3.04, 0.63, -0.09);
   }
-  box-shadow: 0px 5px 20px #000C;
-  flex: 0 0 auto;
   img {
     border: 1px solid black;
     width: 200px;
   }
 }
 
+.button {
+  @apply bg-white mx-3 px-3 py-1 rounded flex text-black;
+  &:focus {
+    @apply outline-white outline-2 outline-offset-4;
+  }
+}

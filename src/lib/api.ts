@@ -1,6 +1,6 @@
+import lodash from "lodash";
 import { config } from "../../config";
 import axios, { AxiosResponse } from "axios";
-import lodash from "lodash";
 
 export const fetchData = async (uri: string) => {
   try {

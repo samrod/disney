@@ -24,11 +24,13 @@ export interface StoreState {
   error: string | null;
   activeCategoryIndex: number;
   activeItemIndex: number;
+  modalActive: boolean;
   trigger: null| string;
 
   fetchContainers: () => Promise<void>;
   setItem: (id: string, data: {}) => void;
   setActiveItemIndex: (index: number) => void;
   setActiveCategoryIndex: (index: number) => void;
+  setModalActive: (state: boolean) => void;
 }
 

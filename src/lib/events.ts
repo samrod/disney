@@ -3,6 +3,7 @@ import useStore from "./store";
 import { StoreState } from "./types";
 import { $, $$, restrictToRange } from "./utils";
 import { fetchSet } from "./api";
+import { renderModal } from "./render";
 
 export const navControl = (e: KeyboardEvent) => {  
   switch (e.key) {
@@ -22,38 +23,76 @@ export const navControl = (e: KeyboardEvent) => {
       e.preventDefault();
       highlightSidways(1);
       break;
+    case "Escape":
+    case "Backspace":
+      e.preventDefault();
+      hideModal();
   }
 };
 
 const highlightSidways = (step: number) => {
+  const { modalActive, activeItemIndex, setActiveItemIndex } = useStore.getState();
+  if (modalActive) {
+    return;
+  }
   const activeItem = document.activeElement;
-  const { activeItemIndex, setActiveItemIndex } = useStore.getState();
   const totalItems = Number(activeItem.parentNode?.children.length);
   const newItemIndex = restrictToRange(activeItemIndex + step, totalItems);
   setActiveItemIndex(newItemIndex);
 };
 
 const highlightUpDown = (step: number) => {
-  const { activeCategoryIndex, setActiveCategoryIndex } = useStore.getState();
+  const { modalActive, activeCategoryIndex, setActiveCategoryIndex } = useStore.getState();
+  if (modalActive) {
+    return;
+  }
   const totalCategories = $$(".category").length;
   const newCategoryIndex = restrictToRange(activeCategoryIndex + step, totalCategories);
   setActiveCategoryIndex(newCategoryIndex);
 }
 
-export const updateSelectedItem = ({ activeCategoryIndex, activeItemIndex }: StoreState, preState?: StoreState) => {
-  if (!preState) {
-    $('.slider[data-index="0"] a[data-index="0"]')?.focus();
-    return;
-  }
-  if (activeItemIndex !== preState.activeItemIndex || activeCategoryIndex !== preState.activeCategoryIndex ) {
-    const selector = `.slider[data-index="${activeCategoryIndex}"] a[data-index="${activeItemIndex}"]`;
-    $(selector)?.focus();    
-  }
+export const updateSelectedItem = () => {
+  const { activeCategoryIndex, activeItemIndex } = useStore.getState();
+  const selector = `.slider[data-index="${activeCategoryIndex}"] a[data-index="${activeItemIndex}"]`;
+  $(selector)?.focus();    
 };
 
 export const selectTile = async (e: MouseEvent) => {
   e.preventDefault();
+  const { items, setModalActive } = useStore.getState();
+  setModalActive(true);
   const { id } = e.target?.dataset;
-  const { items } = useStore.getState();
+  renderModal(items[id]);
   console.log(items[id]);
 };
+
+const hideModal = () => {
+  const { setModalActive } = useStore.getState();
+  setModalActive(false);
+  $("#modal").setAttribute("class", "hide");
+};
+
+export const clearModal = () => {
+  const { modalActive } = useStore.getState();
+  if (!modalActive) {
+    const $modal = $("#modal");
+    $modal.innerHTML = "";
+    $modal.setAttribute("class", "");
+    updateSelectedItem();
+  }
+};
+
+export const onPlayClick = (e) => {
+  $("#modal .video")?.play();
+  $(".info").setAttribute("data-playing", "true");
+  $(".video").setAttribute("class", "video playing")
+  $(".playButton.pause").focus();
+};
+
+export const onPauseClick = (e) => {
+  $("#modal .video")?.pause();
+  $(".info").setAttribute("data-playing", "false");
+  // $(".video").setAttribute("class", "video")
+  $(".playButton.play").focus();
+};
+
