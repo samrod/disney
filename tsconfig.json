@@ -19,7 +19,7 @@
       "esnext",
       "dom"
     ],
-    "outDir": "./dist",
+    "outDir": "./build",
     "rootDir": "./",
     "sourceMap": true
   },

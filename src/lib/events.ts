@@ -1,9 +1,6 @@
-import { getActiveResourcesInfo } from "process";
-import useStore from "./store";
-import { StoreState } from "./types";
 import { $, $$, restrictToRange } from "./utils";
-import { fetchSet } from "./api";
 import { renderModal } from "./render";
+import useStore from "./store";
 
 export const navControl = (e: KeyboardEvent) => {  
   switch (e.key) {

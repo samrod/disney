@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "deploy": "deploy build ec2-user@samrod.com/var/www/samrod.com/disney",
+    "export": "irm build && yarn build || true && yarn deploy"
   },
   "dependencies": {
     "axios": "^1.7.7",
