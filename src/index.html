@@ -7,6 +7,16 @@
   </head>
 
   <body>
+    <script id="tmpl-container-skeleton" type="text/x-handlebars-template">
+      <div class="slider" data-type="slider" data-index="{{index}}"">
+        <a href="#" class="item-tile placeholder" data-index="0"></a>
+        <a href="#" class="item-tile placeholder" data-index="1"></a>
+        <a href="#" class="item-tile placeholder" data-index="2"></a>
+        <a href="#" class="item-tile placeholder" data-index="3"></a>
+        <a href="#" class="item-tile placeholder" data-index="4"></a>
+      </div>
+    </script>
+
     <script id="tmpl-tile" type="text/x-handlebars-template">
       <a href="#" class="item-tile" data-id="{{getItemId item}}" data-type="tile" data-index="{{@index}}">
         <img src="{{formatImageSrc item.assets.tile.id 200 jpeg}}" alt="{{getItemTitle item}}" width="100" height="50" />
@@ -14,8 +24,9 @@
     </script>
 
     <script id="tmpl-container" type="text/x-handlebars-template">
-      <div class="slider {{style}}" data-type="slider" data-index="{{index}}">
-        {{#each items}}
+      <h4>{{getItemTitle set}}</h4>
+      <div class="slider {{set.style}}" data-type="slider" data-index="{{index}}">
+        {{#each set.items}}
           {{>tile item=this}}
         {{/each}}
       </div>
@@ -29,13 +40,10 @@
         </div>
       {{else}}
         <div class="page">
-          {{#each this.containers}}
-            {{#if this.set.items}}
-              <div class="category">
-                <h4>{{getItemTitle this.set}}</h4>
-                {{> container items=this.set.items index=@index }}
-              </div>
-            {{/if}}
+          {{#each this.sets}}
+            <div class="category">
+              {{> container set=this.set index=@index}}
+            </div>
           {{/each}}
         </div>
       {{/if}}
@@ -55,7 +63,7 @@
           {{#if this.videoArt}}
             <div class="actions">
               <button class="playButton play button" autofocus>Play</button>
-              <button class="playButton pause button" autofocus>Pause</button>
+              <button class="playButton pause button">Pause</button>
             </div>
           {{/if}}
         </h4>

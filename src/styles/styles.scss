@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html {
   scroll-behavior: smooth;
 }
@@ -20,28 +19,33 @@ h3 { font-size: 1.6rem; }
 h4 { font-size: 1.3rem; }
 
 #screen {
-  @apply flex flex-col aspect-video w-[1080px];
+  @apply flex flex-col aspect-video;
   // border: 1px solid red;
+  scroll-behavior: smooth;
 }
 
 .page {
-  @apply flex flex-col ml-auto w-11/12 text-white;
+  @apply flex flex-col ml-auto text-white overflow-hidden w-[1080px] max-h-[670px];
+  scroll-behavior: smooth;
   &.message {
     @apply mr-auto w-8/12 text-center justify-center h-screen;
   }
 }
 
 .category {
-  @apply py-2;
+  @apply py-2 pl-4;
+  h4 {
+    @apply ml-2;
+  }
 }
 
 .slider {
-  @apply -ml-6 px-6 pt-2 pb-6 flex flex-nowrap overflow-hidden;
+  @apply -ml-4 px-6 pt-2 pb-6 flex flex-nowrap overflow-hidden;
   scroll-behavior: smooth;
 }
 
 .item-tile {
-  @apply mx-3 my-2 overflow-hidden rounded-sm;
+  @apply relative mx-3 my-2 overflow-hidden rounded-sm z-0;
   box-shadow: 0px 3px 10px #000C;
   flex: 0 0 auto;
   transition: 
@@ -52,8 +56,19 @@ h4 { font-size: 1.3rem; }
     &:first-child {
     @apply ml-0;
   }
-  &:focus {
-    @apply outline-white outline-2 outline-offset-4 rounded-lg;
+  &.placeholder {
+    @apply w-[200px] aspect-video shadow-transparent;
+    animation: breathe 0.75s infinite alternate ease-in-out;
+
+    &:nth-of-type(1) { animation-delay: 0s; }
+    &:nth-of-type(2) { animation-delay: 0.2s; }
+    &:nth-of-type(3) { animation-delay: 0.4s; }
+    &:nth-of-type(4) { animation-delay: 0.6s; }    
+  }
+  &:focus,
+  &:focus-visible {
+    @apply outline-white outline-2 outline-offset-4 rounded-lg z-10;
+    outline-style: solid;
     transform: scale(1.1);
     box-shadow: 0px 7px 25px #000C;
     transition: 
@@ -62,9 +77,14 @@ h4 { font-size: 1.3rem; }
     transform 0.35s cubic-bezier(0.12, 3.04, 0.63, -0.09);
   }
   img {
+    @apply w-[200px];
     border: 1px solid black;
-    width: 200px;
   }
+}
+
+@keyframes breathe {
+  0% { background-color: #666;}
+  100% { background-color: #999; }
 }
 
 .button {

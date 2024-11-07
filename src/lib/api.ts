@@ -1,4 +1,3 @@
-import lodash from "lodash";
 import { config } from "../../config";
 import axios, { AxiosResponse } from "axios";
 

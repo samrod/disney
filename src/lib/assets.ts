@@ -1,7 +1,9 @@
+import { noop } from "lodash";
 import { fetchSet } from "./api";
 import { getItemImage, formatImageSrc, getItemTitle } from "./helpers";
 import { consoleLog } from "./logging";
 import useStore from "./store";
+import { ContainerSet } from "./types";
 
 const validateImageUrl = (url: string) => {
   return new Promise((resolve) => {
@@ -57,34 +59,55 @@ const removeMissingImages = async (items) => {
   return results.filter(Boolean);
 };
 
-const filterNormalizedData = async (container: any[]): Promise<any[]> => {
-  const validatedItems = await removeMissingImages(container.set.items);
+export const filterNormalizedData = async (container: ContainerSet): Promise<ContainerSet> => {
+  if (!container?.items) {
+    return null;
+  }
+  const validatedItems = await removeMissingImages(container.items);
   if (validatedItems.length > 0) {
     return {
       ...container,
-      set: { ...container.set, items: validatedItems }
+      set: {
+        ...container,
+        items: validatedItems,
+      },
     };
   }
   return null;
 };
 
-export const fetchAndNormalizeData = async (data) => {
-  const normalizedContainers = await Promise.all(
-    data.containers.map(async (_container) => {
-      let container;
-      if (_container.set.refId) {
-        const response = await fetchSet(_container.set.refId)
-        container = {
-          ..._container,
-          set: response.CuratedSet
-            || response.TrendingSet
-            || response.PersonalizedCuratedSet
-        };
-      } else {
-        container = _container;
-      }
-      return filterNormalizedData(container);
-    })
+export const fetchRefData = async (container: ContainerSet, callback = noop): Promise<ContainerSet> => {
+  if (!container) {
+    return;
+  }
+  const response = await fetchSet(container.set.refId);
+  const _container = (
+    response.CuratedSet
+    || response.TrendingSet
+    || response.PersonalizedCuratedSet
   );
-  return normalizedContainers.filter(Boolean);
+  const normalizedData = await filterNormalizedData(_container);
+  callback();
+  return { ...container, set: normalizedData };
 };
+
+export const fetchAndNormalizeData = async (data): Promise<{ sets: ContainerSet[], refs: ContainerSet[]}> => {
+  const { sets, refs } = (await Promise.all(
+    data.containers.map(async (_container) => {
+      const isRef = _container?.set.refId;
+      const result = isRef
+        ? await _container
+        : await filterNormalizedData(_container.set);
+
+      return result ? { result, isRef } : null;
+    })
+  ))
+  .reduce((acc, item) => {
+    if (item) {      
+      acc[item.isRef ? "refs" : "sets"].push(item.result);
+    }
+    return acc;
+  }, { sets: [], refs: [] });
+  return { sets, refs };
+};
+

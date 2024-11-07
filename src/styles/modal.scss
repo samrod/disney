@@ -1,7 +1,7 @@
 #modal {
   @apply 
     hidden fixed opacity-0 justify-center items-center size-full top-0 left-0
-    backdrop-blur-md bg-gradient-to-t from-black text-white;
+    backdrop-blur-md bg-gradient-to-t from-black text-white z-20;
 
   &.hide {
     @apply flex;
@@ -33,6 +33,9 @@
 .modal-content {
   @apply flex relative w-10/12 max-w-[1280px] aspect-video bg-no-repeat rounded-lg overflow-hidden;
   transition: background-size 3s cubic-bezier(0, 1, 1, 1);
+  box-shadow:
+    1px 1px 1px inset #CCC9,
+    -1px -1px 1px inset #6669;
 }
 
 .hero-overlay {

@@ -1,19 +1,18 @@
 import Handlebars from "handlebars";
 import { StoreState } from "./types";
 import { $, $$, bindEvent } from "./utils";
-import "/styles/styles.scss";
-import { clearModal, navControl, onPauseClick, onPlayClick, selectTile, updateSelectedItem } from "./events";
-import useStore from "./store";
+import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayClick, scrollObserver, selectTile, updateSelectedItem } from "./events";
 import { compileTemplate, getItemId, getItemTitle, getItemImage, formatImageSrc } from "./helpers";
-import { bind } from "lodash";
+import "/styles/styles.scss";
 
 export const renderContainers = (state: StoreState) => {
   $("#screen").innerHTML += compileTemplate($("#tmpl-containers"), state);
   [
     { element: document.body, event: "keydown", handler: navControl },
-    { element: $$("a.item-tile"), event: "click", handler: selectTile },
+    { element: $$("a.item-tile"), event: "click", handler: e => e.preventDefault() },
     { element: $("#modal"), event: "transitionend", handler: clearModal },
   ].forEach(bindEvent);
+  scrollObserver(".category:last-child", fetchAndAddNewCategories);
   updateSelectedItem();
 };
 

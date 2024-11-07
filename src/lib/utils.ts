@@ -15,7 +15,7 @@ type UpdateTypes = {
 export const update = (set, func: (state: UpdateTypes) => void) => set(produce(func));
 
 export const restrictToRange = (value: number, max: number): number => {
-  return Math.max(Math.min(value, max - 1), 0);
+  return Math.max(Math.min(value, max), 0);
 };
 
 interface BindParams {
