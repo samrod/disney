@@ -6,6 +6,7 @@ import { fetchAndNormalizeData } from "./assets";
 import { updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
+import { absoluteIndexFromVisible } from "./vertical-navigation";
 
 const useStore = createStore<StoreState>((set, get) => ({
   containers: [],
@@ -62,6 +63,7 @@ const useStore = createStore<StoreState>((set, get) => ({
 
   setActiveCategoryIndex: (index) => update(set, (state) => {
     state.activeCategoryIndex = index;
+    state.activeItemIndex = absoluteIndexFromVisible(index);
     state.trigger = "setActiveCategoryIndex";
   }),
 
