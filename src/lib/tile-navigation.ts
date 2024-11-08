@@ -4,14 +4,23 @@ import useStore from "./store";
 
 const MARGIN_WIDTH = 48;
 export const centerPartialTile = () => {
+  if (useStore.getState().keyActive) {
+    return;
+  }
   const $activeItem = document.activeElement;
+  if (!$activeItem) return;
+
   const $row = $activeItem.parentElement;
   const clientWidth = $activeItem.clientWidth;
-  const itemRightEdge = $activeItem?.offsetLeft + clientWidth;
-  const rowScrollOffset = $row?.scrollLeft + $row?.clientWidth;
-  if (itemRightEdge > rowScrollOffset) {
-    const scrollIncriment = (clientWidth + MARGIN_WIDTH) << 1;
-    $row?.scrollBy(scrollIncriment, 0);
+
+  const itemRect = $activeItem.getBoundingClientRect();
+  const rowRect = $row.getBoundingClientRect();
+
+  const partialTile = itemRect.right > rowRect.right && itemRect.left < rowRect.right;
+
+  if (partialTile) {
+    const scrollOffset = (clientWidth + MARGIN_WIDTH) << 1;
+    $row?.scrollBy(scrollOffset, 0);
   }
 };
 
@@ -28,8 +37,21 @@ export const highlightSidways = (step: number) => {
 };
 
 export const highlightUpDown = (step: number) => {
-  const { sets, refs, modalActive, activeCategoryIndex, setActiveCategoryIndex } = useStore.getState();
+  const { sets, refs, modalActive, activeCategoryIndex, bannerActive, setActiveCategoryIndex, setBannerActive } = useStore.getState();
   if (modalActive) {
+    return;
+  }
+  if (bannerActive) {
+    if (step === -1) {
+      return;
+    }
+    setBannerActive(false);
+    setActiveCategoryIndex(0, false);
+    return;
+  }
+  if (activeCategoryIndex === 0 && step === -1) {
+    setBannerActive(true);
+    setActiveCategoryIndex(-1, false);
     return;
   }
   const totalCategories = (sets as []).length + (refs as []).length;
@@ -75,6 +97,9 @@ export const absoluteIndexFromVisible = (newCategoryIndex: number): number =>  {
 };
 
 export const scrollToGridx = (e: UIEvent) => {
+  if (useStore.getState().keyActive) {
+    return;
+  }
   const currentScrollLeft = e.target?.scrollLeft;
   const tileWidth = document.activeElement.clientWidth + MARGIN_WIDTH;
   const nearestIncrement = Math.round(currentScrollLeft / tileWidth) * tileWidth;

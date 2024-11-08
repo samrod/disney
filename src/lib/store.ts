@@ -18,9 +18,11 @@ const useStore = createStore<StoreState>((set, get) => ({
   error: null,
   videoPlaying: false,
   refIndex: 0,
+  keyActive: false,
   activeCategoryIndex: 0,
   activeItemIndex: 0,
   modalActive: false,
+  bannerActive: false,
   trigger: null,
 
   fetchContainers: async () => {
@@ -72,9 +74,11 @@ const useStore = createStore<StoreState>((set, get) => ({
     state.trigger = "setActiveItemIndex";
   }),
 
-  setActiveCategoryIndex: (index) => update(set, (state) => {
+  setActiveCategoryIndex: (index, updateActiveItem = true) => update(set, (state) => {
     state.activeCategoryIndex = index;
-    state.activeItemIndex = absoluteIndexFromVisible(index);
+    if (updateActiveItem) {
+      state.activeItemIndex = absoluteIndexFromVisible(index);
+    }
     state.trigger = "setActiveCategoryIndex";
   }),
 
@@ -85,12 +89,25 @@ const useStore = createStore<StoreState>((set, get) => ({
       state.videoPlaying = false;
     }
   }),
+
+  setBannerActive: (active) => update( set, (state) => {
+    state.bannerActive = active;
+    state.trigger = "setBannerActive";
+  }),
+
+  setKeyActive: (active) => update( set, (state) => {
+    state.keyActive = typeof active === "boolean";
+    state.trigger = "setKeyActive";
+  }),
 }));
 
 let __DEV__;
 // __DEV__ = true;
 useStore.subscribe(({ trigger, ...state }, { trigger: preTrigger, ...preState }) => {
-  updateSelectedItem();
+  if (state.activeCategoryIndex !== preState.activeCategoryIndex
+      || state.activeItemIndex !== preState.activeItemIndex) {
+    updateSelectedItem();
+  }
   if (__DEV__) {
     const diff = objDiff(preState, state);
     if (diff && trigger !== "setItem") {

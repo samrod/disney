@@ -125,6 +125,8 @@ export interface StoreState {
   activeCategoryIndex: number;
   activeItemIndex: number;
   modalActive: boolean;
+  bannerActive: boolean;
+  keyActive: boolean;
   trigger: null| string;
 
   fetchContainers: () => Promise<void>;
@@ -133,6 +135,8 @@ export interface StoreState {
   setItem: (id: string, item: Item) => void;
   setCollection: (data: ContainerSet) => void;
   setActiveItemIndex: (index: number) => void;
-  setActiveCategoryIndex: (index: number) => void;
+  setActiveCategoryIndex: (index: number, updateActiveItem?: boolean) => void;
   setModalActive: (state: boolean) => void;
-}
+  setBannerActive: (state: boolean) => void;
+  setKeyActive: (state: boolean) => void;
+}}

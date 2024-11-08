@@ -1,21 +1,30 @@
-import Handlebars from "handlebars";
-import { ContainerSet, StoreState } from "./types";
-import { $, $$, bindEvent } from "./utils";
-import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayClick, scrollObserver, selectTile, updateSelectedItem } from "./events";
-import { compileTemplate, getItemId, getItemTitle, getItemImage, formatImageSrc } from "./helpers";
-import "/styles/styles.scss";
 import { debounce } from "lodash";
+import Handlebars from "handlebars";
+import { $, $$, bindEvent } from "./utils";
+import { ContainerSet, StoreState } from "./types";
+import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayClick, scrollObserver, updateSelectedItem } from "./events";
+import { compileTemplate, getItemId, getItemTitle, getItemImage, formatImageSrc } from "./helpers";
 import { scrollToGridx, scrollToGridy } from "./tile-navigation";
+import "/styles/styles.scss";
+import useStore from "./store";
 
-
-export const renderSlider = (state: ContainerSet) => {
-  $("#slider").innerHTML = compileTemplate($("#tmpl-slider"), state);
+export const renderBanner = (state: ContainerSet) => {
+  const $banner = $("#banner");
+  if (!$banner) {
+    return;
+  }
+  $("#banner").innerHTML = compileTemplate($("#tmpl-banner"), state);
 };
 
 export const renderContainers = (state: StoreState) => {
+  const $screen = $("#screen");
+  if (!$screen) {
+    return;
+  }
   $("#screen").innerHTML += compileTemplate($("#tmpl-containers"), state);
   [
     { element: document.body, event: "keydown", handler: navControl },
+    { element: document.body, event: "keyup", handler: useStore.getState().setKeyActive },
     { element: $$("a.item-tile"), event: "click", handler: e => e.preventDefault() },
     { element: $("#modal"), event: "transitionend", handler: clearModal },
     { element: $$(".slider"), event: "scroll", handler: debounce(scrollToGridx, 100) },
@@ -24,7 +33,6 @@ export const renderContainers = (state: StoreState) => {
   scrollObserver(".category:last-child", fetchAndAddNewCategories);
   updateSelectedItem();
   fetchAndAddNewCategories()
-
 };
 
 export const renderNewCategory = (index: number) => (set: ContainerSet) => {

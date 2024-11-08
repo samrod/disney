@@ -78,7 +78,7 @@
 }
 
 .video {
-  @apply absolute bottom-[10%] right-[10%] z-10 aspect-video w-[50%] opacity-0;
+  @apply absolute bottom-[10%] right-[5%] z-10 aspect-video w-[50%] opacity-0;
   transition: opacity 0.5s ease-in;
   &.playing {
     @apply opacity-100;

@@ -7,30 +7,44 @@ import { compileTemplate } from "./helpers";
 import { highlightUpDown, highlightSidways, centerPartialTile } from "./tile-navigation";
 
 export const navControl = (e: KeyboardEvent) => {  
+  const { bannerActive, setKeyActive } = useStore.getState();
+  setKeyActive(true);
   switch (e.key) {
     case "ArrowDown":
       e.preventDefault();
       highlightUpDown(1);
       break;
     case "ArrowUp":
+      if (bannerActive) {
+        return;
+      }
       e.preventDefault();
       highlightUpDown(-1);
       break;
     case "ArrowLeft":
+      if (bannerActive) {
+        return;
+      }
       e.preventDefault();
       highlightSidways(-1);
       break;
     case "ArrowRight":
+      if (bannerActive) {
+        return;
+      }
       e.preventDefault();
       highlightSidways(1);
       break;
     case "Escape":
     case "Backspace":
+      if (bannerActive) {
+        return;
+      }
       e.preventDefault();
       hideModal();
       break;
     case "Enter":
-      e.preventDefault();
+      !bannerActive && e.preventDefault();
       const classList = e.target.classList;
       if (classList.contains("item-tile")) {
         selectTile();
@@ -49,6 +63,13 @@ export const navControl = (e: KeyboardEvent) => {
 
 export const updateSelectedItem = () => {
   const { activeCategoryIndex, activeItemIndex } = useStore.getState();
+  if (activeCategoryIndex < 0) {
+    document.activeElement?.blur();
+    $("#banner .splide__track")?.classList.add("active");
+    $("#banner .is-active")?.focus();
+    return;
+  }
+  $("#banner .splide__track")?.classList.remove("active");
   const selector = `.slider[data-index="${activeCategoryIndex}"] a[data-index="${activeItemIndex}"]`;
   $(selector)?.focus();
   centerPartialTile()
@@ -58,6 +79,7 @@ export const selectTile = () => {
   const { items, setModalActive } = useStore.getState();
   setModalActive(true);
   const { id } = document.activeElement?.dataset;
+  document.activeElement.blur();
   renderModal(items[id]);
 };
 

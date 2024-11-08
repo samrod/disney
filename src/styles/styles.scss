@@ -1,4 +1,6 @@
 @use "modal";
+@use "banner";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,30 +32,6 @@ h4 { font-size: 1.3rem; }
   scroll-behavior: smooth;
   &.message {
     @apply mr-auto w-8/12 text-center justify-center h-screen;
-  }
-}
-
-.splide {
-  @apply pl-[20px] w-[1075px] mx-auto;
-  .splide__slide {
-    background-size: 110%;
-    transition: background-size 4s ease-in;
-
-    .slide-logo {
-      @apply opacity-0;
-      transform: translateY(-30px);
-      transition:
-        opacity 0.5s ease-in,
-        transform 0.5s ease-out;
-    }
-    &.is-active {
-      background-size: 100%;
-
-      .slide-logo {
-        @apply opacity-100;
-        transform: translateY(0);
-      }
-    }
   }
 }
 
