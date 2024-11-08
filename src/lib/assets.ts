@@ -87,8 +87,7 @@ export const fetchRefData = async (container: ContainerSet, callback = noop): Pr
     || response.PersonalizedCuratedSet
   );
   const normalizedData = await filterNormalizedData(_container);
-  callback();
-  return { ...container, set: normalizedData };
+  callback(normalizedData);
 };
 
 export const fetchAndNormalizeData = async (data): Promise<{ sets: ContainerSet[], refs: ContainerSet[]}> => {

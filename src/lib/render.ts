@@ -1,9 +1,11 @@
 import Handlebars from "handlebars";
-import { StoreState } from "./types";
+import { ContainerSet, StoreState } from "./types";
 import { $, $$, bindEvent } from "./utils";
 import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayClick, scrollObserver, selectTile, updateSelectedItem } from "./events";
 import { compileTemplate, getItemId, getItemTitle, getItemImage, formatImageSrc } from "./helpers";
 import "/styles/styles.scss";
+import { debounce } from "lodash";
+import { scrollToGrid } from "./tile-navigation";
 
 export const renderContainers = (state: StoreState) => {
   $("#screen").innerHTML += compileTemplate($("#tmpl-containers"), state);
@@ -11,9 +13,24 @@ export const renderContainers = (state: StoreState) => {
     { element: document.body, event: "keydown", handler: navControl },
     { element: $$("a.item-tile"), event: "click", handler: e => e.preventDefault() },
     { element: $("#modal"), event: "transitionend", handler: clearModal },
+    { element: $$(".slider"), event: "scroll", handler: debounce(scrollToGrid, 100) },
   ].forEach(bindEvent);
   scrollObserver(".category:last-child", fetchAndAddNewCategories);
   updateSelectedItem();
+};
+
+export const renderNewCategory = (index: number) => (set: ContainerSet) => {
+  const $containerTemplate = $("#tmpl-container");
+  const $newCategory = document.createElement("div");
+  $newCategory.setAttribute("class", "category");
+  $newCategory.innerHTML = compileTemplate($containerTemplate, { set, index });
+  $("#skeleton").remove();
+  [
+    { element: $newCategory.querySelectorAll("a.item-tile"), event: "click", handler: e => e.preventDefault() },
+    { element: $newCategory.querySelectorAll(".slider"), event: "scroll", handler: debounce(scrollToGrid, 100) },
+  ].forEach(bindEvent);
+  $(".page").appendChild($newCategory);
+  scrollObserver(".category:last-child", fetchAndAddNewCategories);
 };
 
 export const renderModal = (data) => {

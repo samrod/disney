@@ -1,9 +1,10 @@
-import { $, $$, restrictToRange } from "./utils";
-import { renderModal } from "./render";
-import useStore from "./store";
 import { noop } from "lodash";
+import { $ } from "./utils";
+import { renderModal, renderNewCategory } from "./render";
+import useStore from "./store";
 import { fetchRefData } from "./assets";
 import { compileTemplate } from "./helpers";
+import { highlightUpDown, highlightSidways } from "./tile-navigation";
 
 export const navControl = (e: KeyboardEvent) => {  
   switch (e.key) {
@@ -44,27 +45,6 @@ export const navControl = (e: KeyboardEvent) => {
         break;
       }
   }
-};
-
-const highlightSidways = (step: number) => {
-  const { modalActive, activeItemIndex, setActiveItemIndex } = useStore.getState();
-  if (modalActive) {
-    return;
-  }
-  const activeItem = document.activeElement;
-  const totalItems = Number(activeItem.parentNode?.children.length);
-  const newItemIndex = restrictToRange(activeItemIndex + step, totalItems);
-  setActiveItemIndex(newItemIndex);
-};
-
-const highlightUpDown = (step: number) => {
-  const { modalActive, activeCategoryIndex, setActiveCategoryIndex } = useStore.getState();
-  if (modalActive) {
-    return;
-  }
-  const totalCategories = $$(".category").length;
-  const newCategoryIndex = restrictToRange(activeCategoryIndex + step, totalCategories);
-  setActiveCategoryIndex(newCategoryIndex);
 };
 
 export const updateSelectedItem = () => {
@@ -140,7 +120,10 @@ export const scrollObserver = (target: string, callback = noop) => {
 export const fetchAndAddNewCategories = async () => {
   const { nextRefIndex, refIndex, refs, sets } = useStore.getState();
   const $page = $(".page");
-
+  const totalContainers = (sets as []).length + (refs as []).length;
+  if ($page.children.length === totalContainers) {
+    return;
+  }
   const $skeleton = document.createElement("div");
   $skeleton.setAttribute("class", "category");
   $skeleton.setAttribute("id", "skeleton");
@@ -149,11 +132,5 @@ export const fetchAndAddNewCategories = async () => {
   $skeleton.innerHTML = compileTemplate($("#tmpl-container-skeleton"), { index });
   $page.appendChild($skeleton);
 
-  const newRef = await fetchRefData(refs[refIndex], () => $("#skeleton").remove());
-  const $containerTemplate = $("#tmpl-container");
-  const $newCategory = document.createElement("div");
-  $newCategory.setAttribute("class", "category");
-  $newCategory.innerHTML = compileTemplate($containerTemplate, { set: newRef.set, index });
-
-  $page.appendChild($newCategory);
+  fetchRefData(refs[refIndex], renderNewCategory(index));
 };

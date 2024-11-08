@@ -6,7 +6,7 @@ import { fetchAndNormalizeData } from "./assets";
 import { updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
-import { absoluteIndexFromVisible } from "./vertical-navigation";
+import { absoluteIndexFromVisible } from "./tile-navigation";
 
 const useStore = createStore<StoreState>((set, get) => ({
   containers: [],
