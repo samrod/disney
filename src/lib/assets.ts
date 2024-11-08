@@ -25,7 +25,7 @@ const getFirstAvailableImageType = async (item, types) => {
   for (const type of types) {
     const masterId = getItemImage(item, type);
     if (!masterId) continue;
-    const src = formatImageSrc(masterId);
+    const src = formatImageSrc(masterId, 200);
     const isValid = await validateImageUrl(src);
     if (isValid) {
       // consoleLog("getFirstAvailableImageType", `${getItemTitle(item)}: ${type} - ${src}`);

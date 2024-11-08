@@ -1,6 +1,12 @@
 import { $, restrictToRange } from "./utils";
 import { consoleLog } from "./logging";
 import useStore from "./store";
+import { debounce } from "lodash";
+
+const MARGIN_WIDTH = 48;
+const nudgeSlider = debounce(($row: HTMLElement) => {
+  $row?.scrollBy(MARGIN_WIDTH + 48, 0);
+}, 0, { leading: false, trailing: true });
 
 export const highlightSidways = (step: number) => {
   const { modalActive, activeItemIndex, setActiveItemIndex } = useStore.getState();
@@ -8,9 +14,15 @@ export const highlightSidways = (step: number) => {
     return;
   }
   const activeItem = document.activeElement;
-  const totalItems = Number(activeItem.parentNode?.children.length);
+  const slider = activeItem.parentElement;
+  const totalItems = Number(slider?.children.length);
   const newItemIndex = restrictToRange(activeItemIndex + step, totalItems - 1);
   setActiveItemIndex(newItemIndex);
+  // const visibleIndex = absoluteIndexFromVisible(newItemIndex);
+  // if ( typeof visibleIndex === "undefined") {
+  //   slider.scrollBy(MARGIN_WIDTH + 48, 0);
+  //   // nudgeSlider(slider);
+  // }
 };
 
 export const highlightUpDown = (step: number) => {
@@ -38,10 +50,7 @@ const getVisibleTiles = ($row: HTMLElement): HTMLElement[] => {
 };
 
 export const visibleIndexFromActiveTile = (): number => {
-  const { activeCategoryIndex } = useStore.getState();
-  const $activeRow =
-    $(`.slider[data-index="${activeCategoryIndex}"]`)
-    || $(`.slider[data-index="${activeCategoryIndex-1}"]`);
+  const $activeRow = document.activeElement.parentElement;
   try {
     const visibleTiles = getVisibleTiles($activeRow);
     return visibleTiles.indexOf(document.activeElement as HTMLElement);
@@ -63,14 +72,24 @@ export const absoluteIndexFromVisible = (newCategoryIndex: number): number =>  {
   }
 };
 
-const MARGIN_WIDTH = 24;
-export const scrollToGrid = (e: UIEvent) => {
+export const scrollToGridx = (e: UIEvent) => {
   const currentScrollLeft = e.target?.scrollLeft;
   const tileWidth = e.target.children[0].clientWidth + MARGIN_WIDTH;
   const nearestIncrement = Math.round(currentScrollLeft / tileWidth) * tileWidth;
 
   e.target?.scrollTo({
     left: nearestIncrement,
+    behavior: "smooth"
+  });
+};
+
+export const scrollToGridy = (e: UIEvent) => {
+  const currentScrollTop = e.target?.scrollTop;
+  const tileHeight = e.target.children[0].clientHeight;
+  const nearestIncrement = Math.round(currentScrollTop / tileHeight) * tileHeight;
+
+  e.target?.scrollTo({
+    top: nearestIncrement,
     behavior: "smooth"
   });
 };

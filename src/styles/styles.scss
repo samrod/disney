@@ -8,7 +8,9 @@ html {
 }
 
 body {
+  @apply h-screen;
   background-color: #023;
+  background-image: linear-gradient(to bottom, #0000 0%, #0006 100%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen';
   font-size: 16px;
 }
@@ -19,13 +21,12 @@ h3 { font-size: 1.6rem; }
 h4 { font-size: 1.3rem; }
 
 #screen {
-  @apply flex flex-col aspect-video;
-  // border: 1px solid red;
+  @apply flex flex-col aspect-video w-[1080px] mx-auto overflow-hidden;
   scroll-behavior: smooth;
 }
 
 .page {
-  @apply flex flex-col ml-auto text-white overflow-hidden w-[1080px] max-h-[670px];
+  @apply flex flex-col ml-auto text-white overflow-hidden w-full max-h-[670px];
   scroll-behavior: smooth;
   &.message {
     @apply mr-auto w-8/12 text-center justify-center h-screen;
@@ -34,6 +35,9 @@ h4 { font-size: 1.3rem; }
 
 .category {
   @apply py-2 pl-4;
+  &:last-child {
+    @apply mb-[50px];
+  }
   h4 {
     @apply ml-2;
   }
@@ -45,7 +49,10 @@ h4 { font-size: 1.3rem; }
 }
 
 .item-tile {
-  @apply relative mx-3 my-2 overflow-hidden rounded-sm z-0;
+  @apply relative mx-6 my-2 overflow-hidden rounded-lg z-0 bg-no-repeat bg-center;
+  background-image: url(../images/spinner.gif);
+  background-color: #FFF3;
+  background-size: 25%;
   box-shadow: 0px 3px 10px #000C;
   flex: 0 0 auto;
   transition: 
@@ -65,6 +72,15 @@ h4 { font-size: 1.3rem; }
     &:nth-of-type(3) { animation-delay: 0.4s; }
     &:nth-of-type(4) { animation-delay: 0.6s; }    
   }
+  img {
+    @apply w-[200px] h-[113px];
+    border: 1px solid black;
+    filter: brightness(1);
+    transition: filter 0.25s ease-out;
+  }
+  &:last-child {
+    margin-right: 200px;
+  }
   &:focus,
   &:focus-visible {
     @apply outline-white outline-2 outline-offset-4 rounded-lg z-10;
@@ -75,10 +91,10 @@ h4 { font-size: 1.3rem; }
     border 0.1s ease-in,
     box-shadow 0.35s cubic-bezier(0.12, 3.04, 0.63, -0.09),
     transform 0.35s cubic-bezier(0.12, 3.04, 0.63, -0.09);
-  }
-  img {
-    @apply w-[200px];
-    border: 1px solid black;
+    img {
+      filter: brightness(1.05);
+      transition-timing-function: cubic-bezier(0, 23, 1, 1);
+    }
   }
 }
 

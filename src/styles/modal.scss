@@ -1,8 +1,12 @@
 #modal {
   @apply 
     hidden fixed opacity-0 justify-center items-center size-full top-0 left-0
-    backdrop-blur-md bg-gradient-to-t from-black text-white z-20;
+    backdrop-blur-md bg-gradient-to-t from-black text-white z-20 bg-no-repeat bg-center;
 
+  background-image: url(../images/spinner.gif);
+  background-color: #FFF3;
+  background-size: 5%;
+  
   &.hide {
     @apply flex;
     .modal-content { background-size: 100%;}
