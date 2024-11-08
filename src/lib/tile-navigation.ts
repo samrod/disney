@@ -18,11 +18,6 @@ export const highlightSidways = (step: number) => {
   const totalItems = Number(slider?.children.length);
   const newItemIndex = restrictToRange(activeItemIndex + step, totalItems - 1);
   setActiveItemIndex(newItemIndex);
-  // const visibleIndex = absoluteIndexFromVisible(newItemIndex);
-  // if ( typeof visibleIndex === "undefined") {
-  //   slider.scrollBy(MARGIN_WIDTH + 48, 0);
-  //   // nudgeSlider(slider);
-  // }
 };
 
 export const highlightUpDown = (step: number) => {

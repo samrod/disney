@@ -53,7 +53,7 @@ export const updateSelectedItem = () => {
   $(selector)?.focus();
 };
 
-export const selectTile = async () => {
+export const selectTile = () => {
   const { items, setModalActive } = useStore.getState();
   setModalActive(true);
   const { id } = document.activeElement?.dataset;
@@ -117,7 +117,7 @@ export const scrollObserver = (target: string, callback = noop) => {
   }
 };
 
-export const fetchAndAddNewCategories = async () => {
+export const fetchAndAddNewCategories = () => {
   const { nextRefIndex, refIndex, refs, sets } = useStore.getState();
   const $page = $(".page");
   const totalContainers = (sets as []).length + (refs as []).length;
