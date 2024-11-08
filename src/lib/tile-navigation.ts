@@ -1,12 +1,19 @@
 import { $, restrictToRange } from "./utils";
 import { consoleLog } from "./logging";
 import useStore from "./store";
-import { debounce } from "lodash";
 
 const MARGIN_WIDTH = 48;
-const nudgeSlider = debounce(($row: HTMLElement) => {
-  $row?.scrollBy(MARGIN_WIDTH + 48, 0);
-}, 0, { leading: false, trailing: true });
+export const centerPartialTile = () => {
+  const $activeItem = document.activeElement;
+  const $row = $activeItem.parentElement;
+  const clientWidth = $activeItem.clientWidth;
+  const itemRightEdge = $activeItem?.offsetLeft + clientWidth;
+  const rowScrollOffset = $row?.scrollLeft + $row?.clientWidth;
+  if (itemRightEdge > rowScrollOffset) {
+    const scrollIncriment = (clientWidth + MARGIN_WIDTH) << 1;
+    $row?.scrollBy(scrollIncriment, 0);
+  }
+};
 
 export const highlightSidways = (step: number) => {
   const { modalActive, activeItemIndex, setActiveItemIndex } = useStore.getState();
@@ -69,7 +76,7 @@ export const absoluteIndexFromVisible = (newCategoryIndex: number): number =>  {
 
 export const scrollToGridx = (e: UIEvent) => {
   const currentScrollLeft = e.target?.scrollLeft;
-  const tileWidth = e.target.children[0].clientWidth + MARGIN_WIDTH;
+  const tileWidth = document.activeElement.clientWidth + MARGIN_WIDTH;
   const nearestIncrement = Math.round(currentScrollLeft / tileWidth) * tileWidth;
 
   e.target?.scrollTo({

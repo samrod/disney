@@ -4,7 +4,7 @@ import { renderModal, renderNewCategory } from "./render";
 import useStore from "./store";
 import { fetchRefData } from "./assets";
 import { compileTemplate } from "./helpers";
-import { highlightUpDown, highlightSidways } from "./tile-navigation";
+import { highlightUpDown, highlightSidways, centerPartialTile } from "./tile-navigation";
 
 export const navControl = (e: KeyboardEvent) => {  
   switch (e.key) {
@@ -51,6 +51,7 @@ export const updateSelectedItem = () => {
   const { activeCategoryIndex, activeItemIndex } = useStore.getState();
   const selector = `.slider[data-index="${activeCategoryIndex}"] a[data-index="${activeItemIndex}"]`;
   $(selector)?.focus();
+  centerPartialTile()
 };
 
 export const selectTile = () => {
