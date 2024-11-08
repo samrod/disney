@@ -74,6 +74,19 @@
       </div>
     </script>
 
+    <script id="tmpl-slider" type="text/x-handlebars-template">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {{#each items}}
+            <li class="splide__slide" style="background-image: url({{formatImageSrc assets.banner.id 1080 'jpeg'}})">
+              <img class="slide-logo" width="600" src="{{formatImageSrc assets.logo.id 600 'png'}}" alt="{{getItemTitle item}}" />
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </script>
+
+    <div id="slider" class="splide" role="group"></div>
     <div id="screen"></div>
     <div id="modal"></div>
   </body>

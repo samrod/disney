@@ -3,7 +3,7 @@ import { StoreState } from "./types";
 import { fetchList } from "./api";
 import { update } from "./utils";
 import { fetchAndNormalizeData } from "./assets";
-import { updateSelectedItem } from "./events";
+import { fetchAndAddNewCategories, updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
 import { absoluteIndexFromVisible } from "./tile-navigation";
@@ -12,6 +12,7 @@ const useStore = createStore<StoreState>((set, get) => ({
   containers: [],
   sets: [],
   refs: [],
+  collections: null,
   items: {},
   loading: false,
   error: null,
@@ -27,14 +28,19 @@ const useStore = createStore<StoreState>((set, get) => ({
     try {
       const response = await fetchList();
       // consoleLog("rawData", response);
-      const { sets, refs } = await fetchAndNormalizeData(response);
+      const { sets, refs, collections } = await fetchAndNormalizeData(response);
+      const parsedCollections = {
+        ...collections,
+        items: collections?.items?.filter(i => i?.assets?.banner),
+      };
       set({
         sets,
         refs,
+        collections: parsedCollections,
         loading: false,
         trigger: "fetchContainers",
       });
-      consoleLog("sets, refs", {sets, refs});
+      consoleLog("sets, refs, collections", {sets, refs, collections});
     } catch (error) {
       set({ loading: false, error: error.message, trigger: "fetchContainers" });
       consoleLog("fetchContainers", `Unable to retrieve data from ${config.API_DOMAIN}, ${error.message}`, "error");
@@ -54,6 +60,11 @@ const useStore = createStore<StoreState>((set, get) => ({
   setItem: (id, data) => update(set, (state) => {
     state.items[id] = data;
     state.trigger = "setItem";
+  }),
+
+  setCollection: (data) => update(set, (state) => {
+    state.collections = data;
+    state.trigger = "setCollection";
   }),
 
   setActiveItemIndex: (index) => update(set, (state) => {

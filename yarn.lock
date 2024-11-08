@@ -552,6 +552,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@splidejs/splide@npm:^4.1.4":
+  version: 4.1.4
+  resolution: "@splidejs/splide@npm:4.1.4"
+  checksum: 10c0/2dc36e0ce13d049b6ff6e2dcd02cf100ad5df014cd7e751e34f941d54f73a9af948b0912f977aaf896a05ac4f0388fc0a2404cf79d970ac632d207f9dbe03044
+  languageName: node
+  linkType: hard
+
 "@types/axios@npm:^0.14.4":
   version: 0.14.4
   resolution: "@types/axios@npm:0.14.4"
@@ -931,6 +938,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "disney@workspace:."
   dependencies:
+    "@splidejs/splide": "npm:^4.1.4"
     "@types/axios": "npm:^0.14.4"
     "@types/lodash": "npm:^4.17.13"
     "@types/node": "npm:^22.8.6"

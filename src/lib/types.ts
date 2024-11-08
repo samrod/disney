@@ -94,8 +94,14 @@ export interface Item {
     pconBlocked: boolean;
   }
 }
+
+interface Asset {
+  type: string;
+  it: string;
+}
 export interface ContainerSet {
   contentClass: string;
+  assets?: Asset[];
   items: Item[];
   meta: Meta;
   refId?: string;
@@ -109,6 +115,7 @@ export interface ContainerSet {
 export interface StoreState {
   sets: ContainerSet[],
   refs: ContainerSet[],
+  collections?: ContainerSet,
   items: { [key: string]: Item };
   containers: Container[];
   loading: boolean;
@@ -124,6 +131,7 @@ export interface StoreState {
   nextRefIndex: () => void;
   setVideoPlaying: (playing?: boolean) => void;
   setItem: (id: string, item: Item) => void;
+  setCollection: (data: ContainerSet) => void;
   setActiveItemIndex: (index: number) => void;
   setActiveCategoryIndex: (index: number) => void;
   setModalActive: (state: boolean) => void;

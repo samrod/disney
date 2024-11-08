@@ -7,6 +7,11 @@ import "/styles/styles.scss";
 import { debounce } from "lodash";
 import { scrollToGridx, scrollToGridy } from "./tile-navigation";
 
+
+export const renderSlider = (state: ContainerSet) => {
+  $("#slider").innerHTML = compileTemplate($("#tmpl-slider"), state);
+};
+
 export const renderContainers = (state: StoreState) => {
   $("#screen").innerHTML += compileTemplate($("#tmpl-containers"), state);
   [
@@ -18,6 +23,8 @@ export const renderContainers = (state: StoreState) => {
   ].forEach(bindEvent);
   scrollObserver(".category:last-child", fetchAndAddNewCategories);
   updateSelectedItem();
+  fetchAndAddNewCategories()
+
 };
 
 export const renderNewCategory = (index: number) => (set: ContainerSet) => {
