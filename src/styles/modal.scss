@@ -38,8 +38,13 @@
   @apply flex relative w-10/12 max-w-[1280px] aspect-video bg-no-repeat rounded-lg overflow-hidden;
   transition: background-size 3s cubic-bezier(0, 1, 1, 1);
   box-shadow:
-    1px 1px 1px inset #CCC9,
-    -1px -1px 1px inset #6669;
+    2px 2px 2px inset #CCC9,
+    -2px -2px 2px inset #6669;
+}
+
+.summary {
+  @apply absolute z-10 w-5/12 ml-6 bottom-[90px];
+  font-size: 1.1rem;
 }
 
 .hero-overlay {
