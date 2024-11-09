@@ -141,10 +141,9 @@ export const scrollObserver = (target: string, callback = noop) => {
 };
 
 export const fetchAndAddNewCategories = () => {
-  const { nextRefIndex, refIndex, refs, sets } = useStore.getState();
+  const { totalCategories, refIndex, refs, sets, nextRefIndex } = useStore.getState();
   const $page = $(".page");
-  const totalContainers = (sets as []).length + (refs as []).length;
-  if ($page.children.length === totalContainers) {
+  if (refIndex === refs.length - 1) {
     return;
   }
   const $skeleton = document.createElement("div");
@@ -154,6 +153,5 @@ export const fetchAndAddNewCategories = () => {
   const index = sets.length + refIndex;
   $skeleton.innerHTML = compileTemplate($("#tmpl-container-skeleton"), { index });
   $page.appendChild($skeleton);
-
   fetchRefData(refs[refIndex], renderNewCategory(index));
 };

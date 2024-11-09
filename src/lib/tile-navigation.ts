@@ -4,9 +4,6 @@ import useStore from "./store";
 
 const MARGIN_WIDTH = 48;
 export const centerPartialTile = () => {
-  if (useStore.getState().keyActive) {
-    return;
-  }
   const $activeItem = document.activeElement;
   if (!$activeItem) return;
 
@@ -37,7 +34,7 @@ export const highlightSidways = (step: number) => {
 };
 
 export const highlightUpDown = (step: number) => {
-  const { sets, refs, modalActive, activeCategoryIndex, bannerActive, setActiveCategoryIndex, setBannerActive } = useStore.getState();
+  const { totalCategories, modalActive, activeCategoryIndex, bannerActive, setActiveCategoryIndex, setBannerActive } = useStore.getState();
   if (modalActive) {
     return;
   }
@@ -54,7 +51,6 @@ export const highlightUpDown = (step: number) => {
     setActiveCategoryIndex(-1, false);
     return;
   }
-  const totalCategories = (sets as []).length + (refs as []).length;
   const newCategoryIndex = restrictToRange(activeCategoryIndex + step, totalCategories - 1);
   setActiveCategoryIndex(newCategoryIndex);
 };
@@ -96,15 +92,17 @@ export const absoluteIndexFromVisible = (newCategoryIndex: number): number =>  {
   }
 };
 
-export const scrollToGridx = (e: UIEvent) => {
-  if (useStore.getState().keyActive) {
+export const scrollToGridx = () => {
+  const { keyActive, activeCategoryIndex } = useStore.getState();
+  if (keyActive) {
     return;
   }
-  const currentScrollLeft = e.target?.scrollLeft;
+  const $slider = $(`.slider[data-index="${activeCategoryIndex}"]`);
+  const currentScrollLeft = $slider?.scrollLeft;
   const tileWidth = document.activeElement.clientWidth + MARGIN_WIDTH;
   const nearestIncrement = Math.round(currentScrollLeft / tileWidth) * tileWidth;
 
-  e.target?.scrollTo({
+  $slider?.scrollTo({
     left: nearestIncrement,
     behavior: "smooth"
   });

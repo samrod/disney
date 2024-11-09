@@ -4,7 +4,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "deploy": "deploy build ec2-user@samrod.com/var/www/samrod.com/disney",
+    "deploy": "deploy build ec2-user@samrod.com/var/www/disney.com",
     "export": "irm build && yarn build || true && yarn deploy"
   },
   "dependencies": {

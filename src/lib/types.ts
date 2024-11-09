@@ -125,6 +125,7 @@ export interface StoreState {
   activeCategoryIndex: number;
   activeItemIndex: number;
   modalActive: boolean;
+  totalCategories: number;
   bannerActive: boolean;
   keyActive: boolean;
   trigger: null| string;
@@ -138,5 +139,6 @@ export interface StoreState {
   setActiveCategoryIndex: (index: number, updateActiveItem?: boolean) => void;
   setModalActive: (state: boolean) => void;
   setBannerActive: (state: boolean) => void;
-  setKeyActive: (state: boolean) => void;
+  setKeyActive: (state: boolean | UIEvent) => void;
+  bumpTotalCategories: () => void;
 }}

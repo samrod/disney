@@ -6,7 +6,7 @@ import { fetchAndNormalizeData } from "./assets";
 import { fetchAndAddNewCategories, updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
-import { absoluteIndexFromVisible } from "./tile-navigation";
+import { absoluteIndexFromVisible, scrollToGridx } from "./tile-navigation";
 
 const useStore = createStore<StoreState>((set, get) => ({
   containers: [],
@@ -14,6 +14,7 @@ const useStore = createStore<StoreState>((set, get) => ({
   refs: [],
   collections: null,
   items: {},
+  totalCategories: 0,
   loading: false,
   error: null,
   videoPlaying: false,
@@ -39,6 +40,7 @@ const useStore = createStore<StoreState>((set, get) => ({
         sets,
         refs,
         collections: parsedCollections,
+        totalCategories: sets.length,
         loading: false,
         trigger: "fetchContainers",
       });
@@ -97,7 +99,13 @@ const useStore = createStore<StoreState>((set, get) => ({
 
   setKeyActive: (active) => update( set, (state) => {
     state.keyActive = typeof active === "boolean";
+    scrollToGridx()
     state.trigger = "setKeyActive";
+  }),
+
+  bumpTotalCategories: () => update( set, (state) => {
+    state.totalCategories = state.totalCategories as number + 1;
+    state.trigger = "totalCategories";
   }),
 }));
 

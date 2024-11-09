@@ -17,6 +17,7 @@ export const renderBanner = (state: ContainerSet) => {
 };
 
 export const renderContainers = (state: StoreState) => {
+  const { setKeyActive } = useStore.getState();
   const $screen = $("#screen");
   if (!$screen) {
     return;
@@ -24,7 +25,7 @@ export const renderContainers = (state: StoreState) => {
   $("#screen").innerHTML += compileTemplate($("#tmpl-containers"), state);
   [
     { element: document.body, event: "keydown", handler: navControl },
-    { element: document.body, event: "keyup", handler: useStore.getState().setKeyActive },
+    { element: document.body, event: "keyup", handler: setKeyActive },
     { element: $$("a.item-tile"), event: "click", handler: e => e.preventDefault() },
     { element: $("#modal"), event: "transitionend", handler: clearModal },
     { element: $$(".slider"), event: "scroll", handler: debounce(scrollToGridx, 100) },
@@ -36,6 +37,9 @@ export const renderContainers = (state: StoreState) => {
 };
 
 export const renderNewCategory = (index: number) => (set: ContainerSet) => {
+  if (!set) {
+    return;
+  }
   const $containerTemplate = $("#tmpl-container");
   const $newCategory = document.createElement("div");
   $newCategory.setAttribute("class", "category");
@@ -47,6 +51,7 @@ export const renderNewCategory = (index: number) => (set: ContainerSet) => {
   ].forEach(bindEvent);
   $(".page").appendChild($newCategory);
   scrollObserver(".category:last-child", fetchAndAddNewCategories);
+  useStore.getState().bumpTotalCategories();
 };
 
 export const renderModal = (data) => {
