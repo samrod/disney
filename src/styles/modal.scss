@@ -1,42 +1,40 @@
 #modal {
   @apply 
     hidden fixed opacity-0 justify-center items-center size-full top-0 left-0
-    backdrop-blur-md bg-gradient-to-t from-black text-white z-20 bg-no-repeat bg-center;
+    backdrop-blur-md bg-gradient-to-t from-black text-white z-20;
 
-  background-image: url(../images/spinner.gif);
-  background-color: #FFF3;
-  background-size: 5%;
-  
   &.hide {
     @apply flex;
-    .modal-content { background-size: 100%;}
+    .modal-bg { transform: scale3d(1, 1, 1); }
     .logo {
       @apply opacity-100;
-      background-position: 0px 0px;
+      transform: translate3d(0, 0, 0);
     }
   }
   &.active {
     @apply flex;
-    .modal-content { background-size: 110%;}
+    .modal-bg { transform: scale3d(1.1, 1.1, 1);}
     .logo {
       @apply opacity-0;
-      background-position: 0px -90px;
+      transform: translate3d(0, -120px, 0);
     }
   }
   &.visible {
     @apply opacity-100;
-    .modal-content { background-size: 100%;}
+    .modal-bg { transform: scale3d(1, 1, 1);}
     .logo {
       @apply opacity-100;
-      background-position: 0px 0px;
+      transform: translate3d(0, 0, 0);
     }
   }
   transition: opacity 0.25s ease-in;
 }
 
 .modal-content {
-  @apply flex relative w-10/12 max-w-[1280px] aspect-video bg-no-repeat rounded-lg overflow-hidden;
-  transition: background-size 3s cubic-bezier(0, 1, 1, 1);
+  @apply flex relative w-10/12 max-w-[1280px] aspect-video bg-no-repeat rounded-lg overflow-hidden bg-center;
+  background-image: url(../images/spinner.gif);
+  background-color: #FFF3;
+  background-size: 5%;
   box-shadow:
     2px 2px 2px inset #CCC9,
     -2px -2px 2px inset #6669;
@@ -51,11 +49,18 @@
   @apply absolute top-0 left-0 z-0 size-full bg-gradient-to-r from-black opacity-75;
 }
 
+.modal-bg {
+  @apply absolute z-0 size-full bg-no-repeat bg-cover;
+  transition: transform 3s cubic-bezier(0, 1, 1, 1);
+  transform-origin: top left;
+}
+
+
 .logo {
   @apply absolute z-10 w-8/12 aspect-video bg-cover bg-no-repeat border-0;
   transition:
     opacity 1s 0.5s ease-in,
-    background-position 1s 0.25s cubic-bezier(0, 1, 1, 1);
+    transform 1s 0.25s cubic-bezier(0, 1, 1, 1);
 }
 
 .info {

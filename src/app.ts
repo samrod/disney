@@ -16,9 +16,9 @@ const init = async () => {
     width: 1080,
     arrows: false,
     keyboard: true,
+    slideFocus: true,
     autoplay: true,
     wheel: false,
-    slideFocus: true,
   }
    ).mount();
 };

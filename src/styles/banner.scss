@@ -10,22 +10,26 @@
   }
 
   .splide__slide {
-    background-size: 110%;
-    transition: background-size 4s ease-in;
-
+    .banner-image {
+      @apply absolute size-full bg-cover z-0;
+      transform-origin: 0 0;
+      transition: transform 4s ease-in;
+      transform: scale3d(1.2, 1.2, 1);
+    }
     .slide-logo {
       @apply opacity-0;
-      transform: translateY(-30px);
+      transform: translate3d(0, -30px, 0);
       transition:
         opacity 0.5s ease-in,
         transform 0.5s ease-out;
     }
     &.is-active {
-      background-size: 100%;
-
+      .banner-image {
+        transform: scale3d(1, 1, 1);
+      }
       .slide-logo {
         @apply opacity-100;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
       }
     }
     &:focus-visible {

@@ -51,7 +51,8 @@
     </script>
 
     <script id="tmpl-modal" type="text/x-handlebars-template">
-      <div class="modal-content" style="background-image: url({{formatImageSrc this.assets.background.id 1200 jpeg}})">
+      <div class="modal-content">
+        <div class="modal-bg" style="background-image: url({{formatImageSrc this.assets.background.id 1200 jpeg}})"></div>
         <div class="hero-overlay"></div>
         <div class="logo" style="background-image: url('{{formatImageSrc this.assets.logo.id 600 'png'}}');""></div>
         <div class="summary">
@@ -81,7 +82,8 @@
       <div class="splide__track">
         <ul class="splide__list">
           {{#each items}}
-            <li class="splide__slide" style="background-image: url({{formatImageSrc assets.banner.id 1080 'jpeg'}})">
+            <li class="splide__slide">
+              <div class="banner-image" style="background-image: url({{formatImageSrc assets.banner.id 1080 'jpeg'}});"></div>
               <img class="slide-logo" width="600" src="{{formatImageSrc assets.logo.id 600 'png'}}" alt="{{getItemTitle item}}" />
             </li>
           {{/each}}
