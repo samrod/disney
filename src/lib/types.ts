@@ -139,6 +139,7 @@ export interface StoreState {
   setActiveCategoryIndex: (index: number, updateActiveItem?: boolean) => void;
   setModalActive: (state: boolean) => void;
   setBannerActive: (state: boolean) => void;
+  setLoading: (state: boolean) => void;
   setKeyActive: (state: boolean | UIEvent) => void;
   bumpTotalCategories: () => void;
 }}

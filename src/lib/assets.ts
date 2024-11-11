@@ -45,8 +45,18 @@ const removeMissingImages = async (items) => {
     const validBgAsset = await getFirstAvailableImageType(item, BG_IMAGE_TYPES);
     const validLogoAsset = await getFirstAvailableImageType(item, LOGO_IMAGE_TYPES);
 
-    if (!validTileAsset || !validBanerAsset || !validLogoAsset) {
-      consoleLog("removeMissingImages", `"${getItemTitle(item)}" image assets missing`, "warn");
+    if (!validTileAsset) {
+      consoleLog("removeMissingImages", `"${getItemTitle(item)}" tile missing`, "warn");
+      return null;
+    }
+
+    if (getItemTitle(item.set) === "collections" && !validBanerAsset) {
+      consoleLog("removeMissingImages", `"${getItemTitle(item)}" banner missing`, "warn");
+      return null;
+    }
+
+    if (!validLogoAsset) {
+      consoleLog("removeMissingImages", `"${getItemTitle(item)}" logo missing`, "warn");
       return null;
     }
     const assets = {
@@ -93,7 +103,7 @@ export const fetchRefData = async (container: ContainerSet, callback = noop): Pr
   callback(normalizedData);
 };
 
-export const fetchAndNormalizeData = async (data): Promise<{ collections: ContainerSet, sets: ContainerSet[], refs: ContainerSet[]}> => {
+export const organizeData = async (data): Promise<{ collections: ContainerSet, sets: ContainerSet[], refs: ContainerSet[]}> => {
   const { collections, sets, refs } = (await Promise.all(
     data.containers.map(async (_container) => {
       const isRef = _container?.set.refId;

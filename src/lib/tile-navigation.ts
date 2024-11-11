@@ -34,7 +34,7 @@ export const highlightSidways = (step: number) => {
 };
 
 export const highlightUpDown = (step: number) => {
-  const { totalCategories, modalActive, activeCategoryIndex, bannerActive, setActiveCategoryIndex, setBannerActive } = useStore.getState();
+  const { loading, totalCategories, modalActive, activeCategoryIndex, bannerActive, setActiveCategoryIndex, setBannerActive } = useStore.getState();
   if (modalActive) {
     return;
   }
@@ -51,7 +51,7 @@ export const highlightUpDown = (step: number) => {
     setActiveCategoryIndex(-1, false);
     return;
   }
-  const newCategoryIndex = restrictToRange(activeCategoryIndex + step, totalCategories - 1);
+  const newCategoryIndex = restrictToRange(activeCategoryIndex + step, loading ? totalCategories : totalCategories - 1);
   setActiveCategoryIndex(newCategoryIndex);
 };
 

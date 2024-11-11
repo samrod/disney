@@ -42,6 +42,7 @@ export const renderNewCategory = (index: number) => (set: ContainerSet) => {
   }
   const $containerTemplate = $("#tmpl-container");
   const $newCategory = document.createElement("div");
+  const { bumpTotalCategories, setLoading } = useStore.getState();
   $newCategory.setAttribute("class", "category");
   $newCategory.innerHTML = compileTemplate($containerTemplate, { set, index });
   $("#skeleton").remove();
@@ -51,7 +52,8 @@ export const renderNewCategory = (index: number) => (set: ContainerSet) => {
   ].forEach(bindEvent);
   $(".page").appendChild($newCategory);
   scrollObserver(".category:last-child", fetchAndAddNewCategories);
-  useStore.getState().bumpTotalCategories();
+  bumpTotalCategories();
+  setLoading(false);
 };
 
 export const renderModal = (data) => {

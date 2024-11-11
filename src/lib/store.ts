@@ -2,8 +2,8 @@ import { createStore } from "zustand/vanilla";
 import { StoreState } from "./types";
 import { fetchList } from "./api";
 import { update } from "./utils";
-import { fetchAndNormalizeData } from "./assets";
-import { fetchAndAddNewCategories, updateSelectedItem } from "./events";
+import { organizeData } from "./assets";
+import { updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
 import { absoluteIndexFromVisible, scrollToGridx } from "./tile-navigation";
@@ -31,7 +31,7 @@ const useStore = createStore<StoreState>((set, get) => ({
     try {
       const response = await fetchList();
       // consoleLog("rawData", response);
-      const { sets, refs, collections } = await fetchAndNormalizeData(response);
+      const { sets, refs, collections } = await organizeData(response);
       const parsedCollections = {
         ...collections,
         items: collections?.items?.filter(i => i?.assets?.banner),
@@ -95,6 +95,11 @@ const useStore = createStore<StoreState>((set, get) => ({
   setBannerActive: (active) => update( set, (state) => {
     state.bannerActive = active;
     state.trigger = "setBannerActive";
+  }),
+
+  setLoading: (active) => update( set, (state) => {
+    state.loading = active;
+    state.trigger = "setLoading";
   }),
 
   setKeyActive: (active) => update( set, (state) => {
