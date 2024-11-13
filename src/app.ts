@@ -11,7 +11,7 @@ const init = async () => {
   renderContainers(state);
   new Splide( "#banner", {
     type: "loop",
-    interval: 5000,
+    interval: 10000,
     speed: 750,
     width: 1080,
     arrows: false,

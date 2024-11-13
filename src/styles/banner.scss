@@ -13,7 +13,7 @@
     .banner-image {
       @apply absolute size-full bg-cover z-0;
       transform-origin: 0 0;
-      transition: transform 4s ease-in;
+      transition: transform 5s cubic-bezier(0.5, 0, 0.35, 1);
       transform: scale3d(1.2, 1.2, 1);
     }
     .slide-logo {
