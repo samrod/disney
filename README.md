@@ -17,6 +17,7 @@ This project was built to showcase a simple layout for presenting media tiles. T
 * [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction): lightweight "state" management for high performance, minimal setup.
 * [Immer](https://immerjs.github.io/immer/): simplifies immutable state updates.
 * [TailwindCSS](https://tailwindcss.com/): rapid styling and a clean codebase.
+* [SCSS](https://sass-lang.com/): mature, stable, and powerful professional grade CSS extension language.
 * [Splide](https://splidejs.com/): lightweight carousel for the top banner slider.
 * [Axios](https://axios-http.com/docs/intro): easy data fetching.
 * [Typescript](https://www.typescriptlang.org): type safety.
