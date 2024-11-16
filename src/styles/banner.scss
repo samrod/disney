@@ -1,43 +1,69 @@
-.splide {
-  @apply pl-[20px] w-[1075px] mx-auto;
+.carousel {
+  @apply relative flex items-end justify-center pl-[20px] w-[1075px] h-[342px] mx-auto;
 
-  .splide__track {
-    @apply rounded-xl border-2 border-transparent;
-    transition: border-color 0.125s ease-in;
-    &.active {
-      @apply border-white;
-    }
-  }
-
-  .splide__slide {
-    .banner-image {
-      @apply absolute size-full bg-cover z-0;
-      transform-origin: 0 0;
-      transition: transform 5s cubic-bezier(0.5, 0, 0.35, 1);
-      transform: scale3d(1.2, 1.2, 1);
-    }
-    .slide-logo {
-      @apply opacity-0;
-      transform: translate3d(0, -30px, 0);
-      transition:
-        opacity 0.5s ease-in,
-        transform 0.5s ease-out;
-    }
-    &.is-active {
-      .banner-image {
-        transform: scale3d(1, 1, 1);
-      }
-      .slide-logo {
-        @apply opacity-100;
-        transform: translate3d(0, 0, 0);
-      }
-    }
-    &:focus-visible {
-      @apply outline-none outline-offset-0;
-    }
-  }
-  &.is-focus-in .splide__slide:focus {
+  &.is-focus-in .carousel-slide:focus {
     outline: none !important;
   }
 }
 
+.carousel-slide {
+  &.is-active {
+    .banner-image {
+      transform: scale3d(1, 1, 1);
+    }
+    .banner-logo {
+      @apply opacity-100;
+      transition-delay: 0.25;;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  &:focus-visible {
+    @apply outline-none outline-offset-0;
+  }
+}
+
+.banner-image {
+  @apply absolute size-full bg-cover z-0;
+  transform-origin: 0 0;
+  transition: transform 5s cubic-bezier(0.5, 0, 0.35, 1);
+  transform: scale3d(1.2, 1.2, 1);
+}
+
+.banner-logo {
+  @apply opacity-0;
+  transform: translate3d(0, -30px, 0);
+  transition:
+    opacity 0.5s 0.25s ease-in,
+    transform 0.5s ease-out;
+}
+
+.carousel-track {
+  @apply absolute z-0 size-full rounded-xl border-2 border-transparent overflow-hidden;
+  transition: border-color 0.125s ease-in;
+  &.active {
+    @apply border-white;
+  }
+}
+
+.carousel-list {
+  @apply flex m-0 p-0 absolute left-0 h-full;
+  backface-visibility: hidden; 
+  transition-duration: 0.25s;
+  transition-timing-function: ease-in;
+}
+
+.carousel-slide {
+  @apply relative box-border list-none m-0 flex-shrink;
+  backface-visibility: hidden; 
+}
+
+.carousel-nav {
+  @apply z-10 mb-8 h-[15px] bottom-[30px];
+  span {
+    @apply inline-block mx-2 h-full aspect-square rounded-full bg-white opacity-50;
+    transition: opacity 0.125s ease-in;
+    &.is-active {
+      @apply opacity-100;
+    }
+  }
+}

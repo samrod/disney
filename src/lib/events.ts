@@ -23,6 +23,7 @@ export const navControl = (e: KeyboardEvent) => {
       break;
     case "ArrowLeft":
       if (bannerActive) {
+        carousel.nextSlide(1, true);
         return;
       }
       e.preventDefault();
@@ -30,6 +31,7 @@ export const navControl = (e: KeyboardEvent) => {
       break;
     case "ArrowRight":
       if (bannerActive) {
+        carousel.nextSlide(-1, true);
         return;
       }
       e.preventDefault();
@@ -65,11 +67,11 @@ export const updateSelectedItem = () => {
   const { activeCategoryIndex, activeItemIndex } = useStore.getState();
   if (activeCategoryIndex < 0) {
     document.activeElement?.blur();
-    $("#banner .splide__track")?.classList.add("active");
+    $("#banner .carousel-track")?.classList.add("active");
     $("#banner .is-active")?.focus();
     return;
   }
-  $("#banner .splide__track")?.classList.remove("active");
+  $("#banner .carousel-track")?.classList.remove("active");
   const selector = `.slider[data-index="${activeCategoryIndex}"] a[data-index="${activeItemIndex}"]`;
   $(selector)?.focus();
   centerPartialTile()

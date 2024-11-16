@@ -1,7 +1,6 @@
 import useStore from './lib/store';
 import { registerHelpersAndPartials, renderContainers, renderBanner } from './lib/render';
-import Splide from '@splidejs/splide';
-import '@splidejs/splide/css';
+import { Carousel } from "./lib/carousel";
 
 const init = async () => {
   registerHelpersAndPartials();
@@ -9,18 +8,12 @@ const init = async () => {
   const state = useStore.getState();
   renderBanner(state.collections);
   renderContainers(state);
-  new Splide( "#banner", {
-    type: "loop",
-    interval: 10000,
-    speed: 750,
+  window["carousel"] = new Carousel({
     width: 1080,
-    arrows: false,
-    keyboard: true,
-    slideFocus: true,
-    autoplay: true,
-    wheel: false,
-  }
-   ).mount();
+    speed: 750,
+    interval: 6000,
+    autoplay: false,
+  });
 };
 
 document.addEventListener("DOMContentLoaded", init);

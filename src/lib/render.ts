@@ -8,12 +8,12 @@ import { scrollToGridx, scrollToGridy } from "./tile-navigation";
 import "/styles/styles.scss";
 import useStore from "./store";
 
-export const renderBanner = (state: ContainerSet) => {
+export const renderBanner = ({ items }: ContainerSet) => {
   const $banner = $("#banner");
   if (!$banner) {
     return;
   }
-  $("#banner").innerHTML = compileTemplate($("#tmpl-banner"), state);
+  $("#banner").innerHTML = compileTemplate($("#tmpl-banner"), { items });
 };
 
 export const renderContainers = (state: StoreState) => {

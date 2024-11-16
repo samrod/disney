@@ -79,19 +79,19 @@
     </script>
 
     <script id="tmpl-banner" type="text/x-handlebars-template">
-      <div class="splide__track">
-        <ul class="splide__list">
+      <div class="carousel-track">
+        <ul class="carousel-list">
           {{#each items}}
-            <li class="splide__slide">
+            <li class="carousel-slide" data-index="{{@index}}" aria-label="{{@index}} of {{@root.items.length}}">
               <div class="banner-image" style="background-image: url({{formatImageSrc assets.banner.id 1080 'jpeg'}});"></div>
-              <img class="slide-logo" width="600" src="{{formatImageSrc assets.logo.id 600 'png'}}" alt="{{getItemTitle item}}" />
+              <img class="banner-logo" width="600" src="{{formatImageSrc assets.logo.id 600 'png'}}" alt="{{getItemTitle item}}" />
             </li>
           {{/each}}
         </ul>
       </div>
     </script>
 
-    <div id="banner" class="splide" role="group"></div>
+    <div id="banner" class="carousel" role="group"></div>
     <div id="screen"></div>
     <div id="modal"></div>
   </body>
