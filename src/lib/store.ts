@@ -7,6 +7,7 @@ import { updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
 import { absoluteIndexFromVisible, scrollToGridx } from "./tile-navigation";
+import { error } from "console";
 
 const useStore = createStore<StoreState>((set, get) => ({
   containers: [],
@@ -30,6 +31,10 @@ const useStore = createStore<StoreState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const response = await fetchList();
+      if (!response) {
+        set({ loading: false, error: true, trigger: "fetchContainers" });
+        return;
+      }
       // consoleLog("rawData", response);
       const { sets, refs, collections } = await organizeData(response);
       const parsedCollections = {

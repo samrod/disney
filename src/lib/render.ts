@@ -8,7 +8,11 @@ import { scrollToGridx, scrollToGridy } from "./tile-navigation";
 import "/styles/styles.scss";
 import useStore from "./store";
 
-export const renderBanner = ({ items }: ContainerSet) => {
+export const renderBanner = (data: ContainerSet) => {
+  if (!data) {
+    return;
+  }
+  const { items } = data;
   const $banner = $("#banner");
   if (!$banner) {
     return;

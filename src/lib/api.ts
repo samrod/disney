@@ -1,23 +1,23 @@
 import { config } from "../../config";
-import axios, { AxiosResponse } from "axios";
+import { consoleLog } from "./logging";
 
 export const fetchData = async (uri: string) => {
   try {
-    const response: AxiosResponse = await axios.get(uri);
-    if (response.status < 200 || response.status >= 300) {
-      throw new Error(`HTTP error: ${response.status}`);
+    const response = await fetch(uri);
+    if (!response.ok || response.status < 200 || response.status >= 300) {
+      consoleLog("HTTP error", response.status, "error");
     }
 
-    return response.data;
+    return await response.json();
   } catch (e) {
-    console.error("Fetch error: ", e);
+    consoleLog("Fetch error", e, "error");
     return false;
   }
 };
 
 export const fetchList = async () => {
-  const { data } = await fetchData(`${config.API_DOMAIN}/home.json`);
-  return data?.StandardCollection || {};
+  const response = await fetchData(`${config.API_DOMAIN}/home.json`);
+  return response.data?.StandardCollection || response;
 };
 
 export const fetchSet = async (ref: string) => {

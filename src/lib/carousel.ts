@@ -4,7 +4,7 @@ export class Carousel {
   $slider: HTMLElement | null;
   $firstSlide: HTMLElement | null;
   $lastSlide: HTMLElement | null;
-  $slides: HTMLCollection | null;
+  $slides: HTMLCollection | [];
   $dots: HTMLElement | null;
   interval: number;
   autoplay: boolean;
@@ -23,8 +23,11 @@ export class Carousel {
 
   init() {
     this.$slider = $(".carousel .carousel-list");
+    if (!this.$slider) {
+      return;
+    }
     this.$slider.addEventListener("transitionend", this.loop.bind(this));
-    this.$slides = this.$slider.children;
+    this.$slides = this.$slider?.children;
     this.count = this.$slides.length;
     this.$firstSlide = this.$slider.firstElementChild as HTMLElement;
     this.$lastSlide = this.$slider.lastElementChild as HTMLElement;
