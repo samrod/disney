@@ -5,6 +5,7 @@ import useStore from "./store";
 import { fetchRefData } from "./assets";
 import { compileTemplate } from "./helpers";
 import { highlightUpDown, highlightSidways, centerPartialTile } from "./tile-navigation";
+import { tmplContainerSkeleton } from "./templates";
 
 export const navControl = (e: KeyboardEvent) => {  
   const { bannerActive, setKeyActive } = useStore.getState();
@@ -156,7 +157,7 @@ export const fetchAndAddNewCategories = async () => {
   $skeleton.setAttribute("id", "skeleton");
   nextRefIndex();
   const index = sets.length + refIndex;
-  $skeleton.innerHTML = compileTemplate($("#tmpl-container-skeleton"), { index });
+  $skeleton.innerHTML = tmplContainerSkeleton(index);
   setLoading(true);
   $page.appendChild($skeleton);
   await fetchRefData(refs[refIndex], renderNewCategory(index));

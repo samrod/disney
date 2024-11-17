@@ -72,7 +72,7 @@ const removeMissingImages = async (items) => {
   return results.filter(Boolean);
 };
 
-export const filterNormalizedData = async (container: ContainerSet): Promise<ContainerSet> => {
+const normalizeData = async (container: ContainerSet): Promise<ContainerSet> => {
   if (!container?.items) {
     return null;
   }
@@ -80,13 +80,34 @@ export const filterNormalizedData = async (container: ContainerSet): Promise<Con
   if (validatedItems.length > 0) {
     return {
       ...container,
-      set: {
-        ...container,
-        items: validatedItems,
-      },
+      items: validatedItems,
     };
   }
   return null;
+};
+
+export const getContainerTypes = async (data): Promise<{ collections: ContainerSet; sets: ContainerSet[]; refs: ContainerSet[] }> => {
+  const collections: ContainerSet = {};
+  const sets: ContainerSet[] = [];
+  const refs: ContainerSet[] = [];
+
+  for (const container of data.containers) {
+    const isRef = !container?.set.items;
+    const title = getItemTitle(container.set);
+
+    if (isRef) {
+      refs.push(container);
+    } else {
+      const result = await normalizeData(container.set);
+      if (title === "Collections") {
+        Object.assign(collections, result);
+      } else {
+        sets.push(result);
+      }
+    }
+  }
+
+  return { collections, sets, refs };
 };
 
 export const fetchRefData = async (container: ContainerSet, callback = noop): Promise<ContainerSet> => {
@@ -99,38 +120,7 @@ export const fetchRefData = async (container: ContainerSet, callback = noop): Pr
     || response.TrendingSet
     || response.PersonalizedCuratedSet
   );
-  const normalizedData = await filterNormalizedData(_container);
+  const normalizedData = await normalizeData(_container);
   callback(normalizedData);
-};
-
-export const organizeData = async (data): Promise<{ collections: ContainerSet, sets: ContainerSet[], refs: ContainerSet[]}> => {
-  const { collections, sets, refs } = (await Promise.all(
-    data.containers.map(async (_container) => {
-      const isRef = _container?.set.refId;
-      const title = getItemTitle(_container.set);
-      if (title === "Collections") {
-        return {
-          result: await filterNormalizedData(_container.set),
-          type: "collections",
-        };
-      }
-      const result = isRef
-        ? await _container
-        : await filterNormalizedData(_container.set);
-
-      return result ? { result, type: isRef ? "refs" : "sets" } : null;
-    })
-  ))
-  .reduce((acc, item) => {
-    if (item) {
-      if (item.type === "collections") {
-        acc.collections = item.result;
-      } else {
-        acc[item.type].push(item.result);
-      }
-    }
-    return acc;
-  }, { collections: {}, sets: [], refs: [] });
-  return { collections, sets, refs };
 };
 

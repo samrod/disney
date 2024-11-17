@@ -1,14 +1,4 @@
-import Handlebars from "handlebars";
-import { consoleLog } from "./logging";
 import { config } from "../../config";
-
-export const compileTemplate = (template: HTMLElement, data: {}) => {
-  if (!template) {
-    return null;
-  }
-  const _template = Handlebars.compile(template.innerHTML)
-  return _template(data);
-};
 
 export const getItemId = (item) => {
   if (!item) {

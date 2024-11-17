@@ -1,32 +1,40 @@
 import { debounce } from "lodash";
-import Handlebars from "handlebars";
 import { $, $$, bindEvent } from "./utils";
-import { ContainerSet, StoreState } from "./types";
+import { ContainerSet } from "./types";
 import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayClick, scrollObserver, updateSelectedItem } from "./events";
-import { compileTemplate, getItemId, getItemTitle, getItemImage, formatImageSrc } from "./helpers";
 import { scrollToGridx, scrollToGridy } from "./tile-navigation";
-import "/styles/styles.scss";
+import { tmplBanner, tmplContainer, tmplContainers, tmplModal } from "./templates";
 import useStore from "./store";
+import "/styles/styles.scss";
+import { Carousel } from "./carousel";
 
-export const renderBanner = (data: ContainerSet) => {
-  if (!data) {
+export const renderBanner = () => {
+  const { collections } = useStore.getState();
+  if (!collections) {
     return;
   }
-  const { items } = data;
+  const { items } = collections;
   const $banner = $("#banner");
   if (!$banner) {
     return;
   }
-  $("#banner").innerHTML = compileTemplate($("#tmpl-banner"), { items });
+  $("#banner").innerHTML = tmplBanner(items);
+  window["carousel"] = new Carousel({
+    width: 1080,
+    speed: 750,
+    interval: 6000,
+    autoplay: false,
+  });
 };
 
-export const renderContainers = (state: StoreState) => {
-  const { setKeyActive } = useStore.getState();
+export const renderContainers = () => {
+  const state = useStore.getState();
+  const { setKeyActive } = state;
   const $screen = $("#screen");
   if (!$screen) {
     return;
   }
-  $("#screen").innerHTML += compileTemplate($("#tmpl-containers"), state);
+  $("#screen").innerHTML += tmplContainers(state);
   [
     { element: document.body, event: "keydown", handler: navControl },
     { element: document.body, event: "keyup", handler: setKeyActive },
@@ -44,17 +52,15 @@ export const renderNewCategory = (index: number) => (set: ContainerSet) => {
   if (!set) {
     return;
   }
-  const $containerTemplate = $("#tmpl-container");
-  const $newCategory = document.createElement("div");
+  const $newCategory = document.createElement('div');
   const { bumpTotalCategories, setLoading } = useStore.getState();
-  $newCategory.setAttribute("class", "category");
-  $newCategory.innerHTML = compileTemplate($containerTemplate, { set, index });
+  $newCategory.innerHTML = tmplContainer(set, index);
   $("#skeleton").remove();
   [
     { element: $newCategory.querySelectorAll("a.item-tile"), event: "click", handler: e => e.preventDefault() },
     { element: $newCategory.querySelectorAll(".slider"), event: "scroll", handler: debounce(scrollToGridx, 100) },
   ].forEach(bindEvent);
-  $(".page").appendChild($newCategory);
+  $(".page").appendChild($newCategory.firstElementChild);
   scrollObserver(".category:last-child", fetchAndAddNewCategories);
   bumpTotalCategories();
   setLoading(false);
@@ -62,7 +68,7 @@ export const renderNewCategory = (index: number) => (set: ContainerSet) => {
 
 export const renderModal = (data) => {
   const $modal = $("#modal");
-  $modal.innerHTML = compileTemplate($("#tmpl-modal"), data);
+  $modal.innerHTML = tmplModal(data);
   $modal.setAttribute("class", "active");
   setTimeout(() => $modal.setAttribute("class", "active"), 50);
   setTimeout(() => $modal.setAttribute("class", "visible active"), 100);
@@ -71,14 +77,4 @@ export const renderModal = (data) => {
     { element: $(".button.pause"), event: "click", handler: onPauseClick },
   ].forEach(bindEvent);
   $(".button.play")?.focus();
-};
-
-export const registerHelpersAndPartials = () => {
-  Handlebars.registerPartial('tile', $('#tmpl-tile').innerHTML);
-  Handlebars.registerPartial('container', $('#tmpl-container').innerHTML);
-
-  Handlebars.registerHelper("getItemId", getItemId);  
-  Handlebars.registerHelper("getItemTitle", getItemTitle);
-  Handlebars.registerHelper("getItemImage", getItemImage);  
-  Handlebars.registerHelper("formatImageSrc", formatImageSrc);
 };

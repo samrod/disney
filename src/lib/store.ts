@@ -2,12 +2,11 @@ import { createStore } from "zustand/vanilla";
 import { StoreState } from "./types";
 import { fetchList } from "./api";
 import { update } from "./utils";
-import { organizeData } from "./assets";
+import { getContainerTypes } from "./assets";
 import { updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
 import { absoluteIndexFromVisible, scrollToGridx } from "./tile-navigation";
-import { error } from "console";
 
 const useStore = createStore<StoreState>((set, get) => ({
   containers: [],
@@ -36,7 +35,7 @@ const useStore = createStore<StoreState>((set, get) => ({
         return;
       }
       // consoleLog("rawData", response);
-      const { sets, refs, collections } = await organizeData(response);
+      const { sets, refs, collections } = await getContainerTypes(response);
       const parsedCollections = {
         ...collections,
         items: collections?.items?.filter(i => i?.assets?.banner),

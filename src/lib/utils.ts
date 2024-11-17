@@ -1,5 +1,9 @@
 import { produce } from 'immer';
 
+Array.prototype.mapJoin = function (callback) {
+  return this.map(callback).join("");
+};
+
 export const $ = (selector: string): HTMLElement => {
   return document.querySelector(selector);
 };

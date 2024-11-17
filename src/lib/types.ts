@@ -1,3 +1,9 @@
+declare global {
+  interface Array<T> {
+    mapJoin(callback: (value: T, index: number, array: T[]) => string): string;
+  }
+}
+
 export interface Container {
   id: string;
   name: string;
