@@ -1,9 +1,7 @@
-import { noop } from "lodash";
-import { $ } from "./utils";
+import { $, noop } from "./utils";
 import { renderModal, renderNewCategory } from "./render";
 import useStore from "./store";
 import { fetchRefData } from "./assets";
-import { compileTemplate } from "./helpers";
 import { highlightUpDown, highlightSidways, centerPartialTile } from "./tile-navigation";
 import { tmplContainerSkeleton } from "./templates";
 

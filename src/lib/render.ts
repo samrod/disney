@@ -1,5 +1,4 @@
-import { debounce } from "lodash";
-import { $, $$, bindEvent } from "./utils";
+import { $, $$, bindEvent, throttle } from "./utils";
 import { ContainerSet } from "./types";
 import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayClick, scrollObserver, updateSelectedItem } from "./events";
 import { scrollToGridx, scrollToGridy } from "./tile-navigation";
@@ -40,8 +39,8 @@ export const renderContainers = () => {
     { element: document.body, event: "keyup", handler: setKeyActive },
     { element: $$("a.item-tile"), event: "click", handler: e => e.preventDefault() },
     { element: $("#modal"), event: "transitionend", handler: clearModal },
-    { element: $$(".slider"), event: "scroll", handler: debounce(scrollToGridx, 100) },
-    { element: $(".page"), event: "scroll", handler: debounce(scrollToGridy, 50) },
+    { element: $$(".slider"), event: "scroll", handler: throttle(scrollToGridx, 100) },
+    { element: $(".page"), event: "scroll", handler: throttle(scrollToGridy, 50) },
   ].forEach(bindEvent);
   scrollObserver(".category:last-child", fetchAndAddNewCategories);
   updateSelectedItem();
@@ -58,7 +57,7 @@ export const renderNewCategory = (index: number) => (set: ContainerSet) => {
   $("#skeleton").remove();
   [
     { element: $newCategory.querySelectorAll("a.item-tile"), event: "click", handler: e => e.preventDefault() },
-    { element: $newCategory.querySelectorAll(".slider"), event: "scroll", handler: debounce(scrollToGridx, 100) },
+    { element: $newCategory.querySelectorAll(".slider"), event: "scroll", handler: throttle(scrollToGridx, 100) },
   ].forEach(bindEvent);
   $(".page").appendChild($newCategory.firstElementChild);
   scrollObserver(".category:last-child", fetchAndAddNewCategories);

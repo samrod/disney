@@ -559,13 +559,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.17.13":
-  version: 4.17.13
-  resolution: "@types/lodash@npm:4.17.13"
-  checksum: 10c0/c3d0b7efe7933ac0369b99f2f7bff9240d960680fdb74b41ed4bd1b3ca60cca1e31fe4046d9abbde778f941a41bc2a75eb629abf8659fa6c27b66efbbb0802a9
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:^22.8.6":
   version: 22.8.6
   resolution: "@types/node@npm:22.8.6"
@@ -888,10 +881,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "disney@workspace:."
   dependencies:
-    "@types/lodash": "npm:^4.17.13"
     "@types/node": "npm:^22.8.6"
     autoprefixer: "npm:^10.4.20"
-    lodash: "npm:^4.17.21"
     postcss: "npm:^8.4.47"
     postcss-cli: "npm:^11.0.0"
     sass: "npm:^1.80.5"
@@ -1437,13 +1428,6 @@ __metadata:
   version: 1.2.4
   resolution: "lines-and-columns@npm:1.2.4"
   checksum: 10c0/3da6ee62d4cd9f03f5dc90b4df2540fb85b352081bee77fe4bbcd12c9000ead7f35e0a38b8d09a9bb99b13223446dd8689ff3c4959807620726d788701a83d2d
-  languageName: node
-  linkType: hard
-
-"lodash@npm:^4.17.21":
-  version: 4.17.21
-  resolution: "lodash@npm:4.17.21"
-  checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
   languageName: node
   linkType: hard
 

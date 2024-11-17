@@ -1,5 +1,3 @@
-import { isEmpty } from "lodash";
-
 type LevelTypes = "info" | "warn" | "error" | "standard" | string;
 const levels: { [key: string]: string } = {
   info: "#090",
@@ -57,7 +55,7 @@ export const objDiff = (_obj1: unknown, _obj2: unknown) => {
       }
     }
   });
-  return isEmpty(diff) ? false : diff;
+  return !Object.keys(diff).length ? false : diff;
 };
 
 export const consoleLog = (

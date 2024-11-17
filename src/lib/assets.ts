@@ -1,9 +1,9 @@
-import { noop } from "lodash";
 import { fetchSet } from "./api";
 import { getItemImage, formatImageSrc, getItemTitle } from "./helpers";
 import { consoleLog } from "./logging";
 import useStore from "./store";
 import { ContainerSet } from "./types";
+import { noop } from "./utils";
 
 const validateImageUrl = (url: string) => {
   return new Promise((resolve) => {

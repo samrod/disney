@@ -16,7 +16,6 @@ This project was built to showcase a simple layout for presenting media tiles. T
 * [TailwindCSS](https://tailwindcss.com/): rapid styling and a clean codebase.
 * [SCSS](https://sass-lang.com/): mature, stable, and powerful professional grade CSS extension language.
 * [Typescript](https://www.typescriptlang.org): type safety.
-* [Lodash](https://lodash.com/docs/4.17.15): utility functions for cleaner code.
 * [Node](https://nodejs.org/en) & [Vite](https://vite.dev/): dev environment and bundler for fast refresh and builds.
 
 ## Notes

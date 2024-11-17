@@ -14,6 +14,19 @@ export const restrictToRange = (value: number, max: number): number => {
   return Math.max(Math.min(value, max), 0);
 };
 
+export function throttle<T extends (...args: unknown[]) => void>(fn: T, delay: number): T {
+  let timeout: NodeJS.Timeout;
+
+  return function(...args: Parameters<T>) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  } as T;
+}
+
+export const noop = () => null;
+
 interface BindParams {
   event: string;
   element: HTMLElement | Window | NodeListOf<Element>;
