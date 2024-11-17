@@ -13,8 +13,6 @@ This project was built to showcase a simple layout for presenting media tiles. T
 - **Scalable Styleguide** – In a full production app, I’d create a master style guide with a semantic color palette and unified typography. This approach keeps styles modular, clean, and aligned with brand standards.
 
 ### Tech Stack
-* [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction): lightweight "state" management for high performance, minimal setup.
-* [Immer](https://immerjs.github.io/immer/): simplifies immutable state updates.
 * [TailwindCSS](https://tailwindcss.com/): rapid styling and a clean codebase.
 * [SCSS](https://sass-lang.com/): mature, stable, and powerful professional grade CSS extension language.
 * [Typescript](https://www.typescriptlang.org): type safety.

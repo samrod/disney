@@ -1,5 +1,3 @@
-import { produce } from 'immer';
-
 Array.prototype.mapJoin = function (callback) {
   return this.map(callback).join("");
 };
@@ -11,12 +9,6 @@ export const $ = (selector: string): HTMLElement => {
 export const $$ = (selector: string): NodeListOf<Element> => {
   return document.querySelectorAll(selector);
 };
-
-type UpdateTypes = {
-  [key: string]: boolean | string | {} | [];
-}
-
-export const update = (set, func: (state: UpdateTypes) => void) => set(produce(func));
 
 export const restrictToRange = (value: number, max: number): number => {
   return Math.max(Math.min(value, max), 0);
@@ -38,3 +30,4 @@ export function bindEvent({ element, event, handler, options = {} }: BindParams)
     element.forEach((el) => el.addEventListener(event, handler, options));
   }
 }
+

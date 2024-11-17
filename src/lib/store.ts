@@ -1,14 +1,13 @@
-import { createStore } from "zustand/vanilla";
-import { StoreState } from "./types";
 import { fetchList } from "./api";
-import { update } from "./utils";
+import { StoreState } from "./types";
+import { createStore, set } from "./state";
 import { getContainerTypes } from "./assets";
 import { updateSelectedItem } from "./events";
 import { consoleLog, objDiff } from "./logging";
 import { config } from "../../config";
 import { absoluteIndexFromVisible, scrollToGridx } from "./tile-navigation";
 
-const useStore = createStore<StoreState>((set, get) => ({
+const states = {
   containers: [],
   sets: [],
   refs: [],
@@ -25,13 +24,15 @@ const useStore = createStore<StoreState>((set, get) => ({
   modalActive: false,
   bannerActive: false,
   trigger: null,
+};
 
+const actions = {
   fetchContainers: async () => {
-    set({ loading: true, error: null });
+    set((state) => ({ loading: true, error: null }));
     try {
       const response = await fetchList();
       if (!response) {
-        set({ loading: false, error: true, trigger: "fetchContainers" });
+        set((state) => ({ loading: false, error: true, trigger: "fetchContainers" }));
         return;
       }
       // consoleLog("rawData", response);
@@ -40,83 +41,83 @@ const useStore = createStore<StoreState>((set, get) => ({
         ...collections,
         items: collections?.items?.filter(i => i?.assets?.banner),
       };
-      set({
+      set((state) => ({
         sets,
         refs,
         collections: parsedCollections,
         totalCategories: sets.length,
         loading: false,
         trigger: "fetchContainers",
-      });
-      consoleLog("sets, refs, collections", {sets, refs, collections});
+      }));
+      consoleLog("sets, refs, collections", { sets, refs, collections });
     } catch (error) {
-      set({ loading: false, error: error.message, trigger: "fetchContainers" });
+      set((state) => ({ loading: false, error: error.message, trigger: "fetchContainers" }));
       consoleLog("fetchContainers", `Unable to retrieve data from ${config.API_DOMAIN}, ${error.message}`, "error");
     }
   },
 
-  setVideoPlaying: (playing) => update(set, (state) => {
-    state.videoPlaying = typeof playing !== "undefined" ? playing : !state.videoPlaying;
-    state.trigger = "setVideoPlaying";
+  setVideoPlaying: (playing) => set((state) => ({
+    videoPlaying: typeof playing !== "undefined" ? playing : !state.videoPlaying,
+    trigger: "setVideoPlaying",
+  })),
+
+  nextRefIndex: () => set((state) => ({
+    refIndex: Number(state.refIndex) + 1,
+    trigger: "setNextRef",
+  })),
+
+  setItem: (id, data) => set((state) => ({
+    items: { ...state.items, [id]: data },
+    trigger: "setItem",
+  })),
+
+  setCollection: (data) => set((state) => ({
+    collections: data,
+    trigger: "setCollection",
+  })),
+
+  setActiveItemIndex: (index) => set((state) => ({
+    activeItemIndex: index,
+    trigger: "setActiveItemIndex",
+  })),
+
+  setActiveCategoryIndex: (index, updateActiveItem = true) => set((state) => ({
+    activeCategoryIndex: index,
+    activeItemIndex: updateActiveItem ? absoluteIndexFromVisible(index) : state.activeItemIndex,
+    trigger: "setActiveCategoryIndex",
+  })),
+
+  setModalActive: (active) => set((state) => ({
+    modalActive: active,
+    trigger: "setModalActive",
+    videoPlaying: !active,
+  })),
+
+  setBannerActive: (active) => set((state) => ({
+    bannerActive: active,
+    trigger: "setBannerActive",
+  })),
+
+  setLoading: (active) => set((state) => ({
+    loading: active,
+    trigger: "setLoading",
+  })),
+
+  setKeyActive: (active) => set((state) => {
+    scrollToGridx();
+    return {
+      keyActive: typeof active === "boolean",
+      trigger: "setKeyActive",
+    };
   }),
 
-  nextRefIndex: () => update(set, (state) => {
-    state.refIndex = Number(state.refIndex) + 1;
-    state.trigger = "setNextRef";
-  }),
+  bumpTotalCategories: () => set((state) => ({
+    totalCategories: state.totalCategories + 1,
+    trigger: "totalCategories",
+  })),
+};
 
-  setItem: (id, data) => update(set, (state) => {
-    state.items[id] = data;
-    state.trigger = "setItem";
-  }),
-
-  setCollection: (data) => update(set, (state) => {
-    state.collections = data;
-    state.trigger = "setCollection";
-  }),
-
-  setActiveItemIndex: (index) => update(set, (state) => {
-    state.activeItemIndex = index;
-    state.trigger = "setActiveItemIndex";
-  }),
-
-  setActiveCategoryIndex: (index, updateActiveItem = true) => update(set, (state) => {
-    state.activeCategoryIndex = index;
-    if (updateActiveItem) {
-      state.activeItemIndex = absoluteIndexFromVisible(index);
-    }
-    state.trigger = "setActiveCategoryIndex";
-  }),
-
-  setModalActive: (active) => update(set, (state) => {
-    state.modalActive = active;
-    state.trigger = "setModalActive";
-    if (!active) {
-      state.videoPlaying = false;
-    }
-  }),
-
-  setBannerActive: (active) => update( set, (state) => {
-    state.bannerActive = active;
-    state.trigger = "setBannerActive";
-  }),
-
-  setLoading: (active) => update( set, (state) => {
-    state.loading = active;
-    state.trigger = "setLoading";
-  }),
-
-  setKeyActive: (active) => update( set, (state) => {
-    state.keyActive = typeof active === "boolean";
-    scrollToGridx()
-    state.trigger = "setKeyActive";
-  }),
-
-  bumpTotalCategories: () => update( set, (state) => {
-    state.totalCategories = state.totalCategories as number + 1;
-    state.trigger = "totalCategories";
-  }),
-}));
+const useStore = createStore<StoreState>({ ...states, ...actions });
 
 let __DEV__;
 // __DEV__ = true;
@@ -131,6 +132,12 @@ useStore.subscribe(({ trigger, ...state }, { trigger: preTrigger, ...preState })
       consoleLog(trigger, diff, "warn");
     }
   }
+
+  (state) => ({
+    activeCategoryIndex: state.activeCategoryIndex,
+    activeItemIndex: state.activeItemIndex,
+    trigger: state.trigger,
+  })
 });
 
 export default useStore;
