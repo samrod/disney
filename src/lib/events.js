@@ -5,7 +5,7 @@ import { fetchRefData } from "./assets";
 import { highlightUpDown, highlightSidways, centerPartialTile } from "./tile-navigation";
 import { tmplContainerSkeleton } from "./templates";
 
-export const navControl = (e: KeyboardEvent) => {  
+export const navControl = (e) => {  
   const { bannerActive, setKeyActive } = useStore.getState();
   setKeyActive(true);
   switch (e.key) {
@@ -127,7 +127,7 @@ const checkIntersectingEntry = (refIndex, refs, callback, observer, target) => a
   }
 };
 
-export const scrollObserver = async (target: string, callback = noop): Promise<void> => {
+export const scrollObserver = async (target, callback = noop) => {
   const $lastRow = $(target);
   const { refIndex, refs } = useStore.getState();
   const observer = new IntersectionObserver(async (entries, observer) => {

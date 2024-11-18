@@ -1,19 +1,18 @@
-type LevelTypes = "info" | "warn" | "error" | "standard" | string;
-const levels: { [key: string]: string } = {
+const levels = {
   info: "#090",
   warn: "#990",
   error: "#C00",
   standard: "#069",
 };
 
-const logStyle = (level: LevelTypes) => `
+const logStyle = (level) => `
   background-color: ${levels[level] || level};
   color: black;
   padding: 5px;
   margin-: 5px 0;
 `;
 
-const logTitleStyle = (level: LevelTypes) => `
+const logTitleStyle = (level) => `
   font-weight: bold;
   font-size: 11px;
   color: ${levels[level] || level};
@@ -23,8 +22,8 @@ const logTitleStyle = (level: LevelTypes) => `
   width: 100px;
 `;
 
-const serialize = (data: unknown) => JSON.parse(JSON.stringify(data));
-const stringifyClean = (data: unknown) => {
+const serialize = (data) => JSON.parse(JSON.stringify(data));
+const stringifyClean = (data) => {
   if (typeof data !== "object") {
     return data;
   }
@@ -32,7 +31,7 @@ const stringifyClean = (data: unknown) => {
   return string.replace(/^"(.+)"$/, "$1");
 };
 
-export const objDiff = (_obj1: unknown, _obj2: unknown) => {
+export const objDiff = (_obj1, _obj2) => {
   if (!_obj1 || !_obj2) {
     return false;
   }
@@ -59,11 +58,11 @@ export const objDiff = (_obj1: unknown, _obj2: unknown) => {
 };
 
 export const consoleLog = (
-    message: string,
-    extraInfo: { [key: string]: any } | string | number,
-    level: string | LevelTypes = "standard",
-    pre?: boolean,
-    post?: boolean,
+    message,
+    extraInfo,
+    level = "standard",
+    pre,
+    post,
   ) => {
     if (process.env.NODE_ENV === "production") {
       return;

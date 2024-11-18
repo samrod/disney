@@ -1,20 +1,6 @@
 import { $, $$, bindEvent } from "./utils";
 
 export class Carousel {
-  $slider: HTMLElement | null;
-  $firstSlide: HTMLElement | null;
-  $lastSlide: HTMLElement | null;
-  $slides: HTMLCollection | [];
-  $dots: HTMLElement | null;
-  interval: number;
-  autoplay: boolean;
-  previousIndex: number;
-  intervalCache: NodeJS.Timeout;
-  index: number;
-  count: number;
-  width: number;
-  speed: number;
-
   constructor(options) {
     Object.assign(this, options);
     this.index = -1;
@@ -29,8 +15,8 @@ export class Carousel {
     this.$slider.addEventListener("transitionend", this.loop.bind(this));
     this.$slides = this.$slider?.children;
     this.count = this.$slides.length;
-    this.$firstSlide = this.$slider.firstElementChild as HTMLElement;
-    this.$lastSlide = this.$slider.lastElementChild as HTMLElement;
+    this.$firstSlide = this.$slider.firstElementChild;
+    this.$lastSlide = this.$slider.lastElementChild;
 
     Array.from(this.$slides).forEach(({ style }) => style.width = `${this.width}px`);
   

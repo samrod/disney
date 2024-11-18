@@ -1,7 +1,7 @@
 import { config } from "../../config";
 import { consoleLog } from "./logging";
 
-export const fetchData = async (uri: string) => {
+export const fetchData = async (uri) => {
   try {
     const response = await fetch(uri);
     if (!response.ok || response.status < 200 || response.status >= 300) {
@@ -20,7 +20,7 @@ export const fetchList = async () => {
   return response.data?.StandardCollection || response;
 };
 
-export const fetchSet = async (ref: string) => {
+export const fetchSet = async (ref) => {
   const { data } = await fetchData(`${config.API_DOMAIN}/sets/${ref}.json`);
   return data;
 };

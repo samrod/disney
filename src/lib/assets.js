@@ -2,10 +2,9 @@ import { fetchSet } from "./api";
 import { getItemImage, formatImageSrc, getItemTitle } from "./helpers";
 import { consoleLog } from "./logging";
 import useStore from "./store";
-import { ContainerSet } from "./types";
 import { noop } from "./utils";
 
-const validateImageUrl = (url: string) => {
+const validateImageUrl = (url) => {
   return new Promise((resolve) => {
     if (!url) {
       resolve(false);
@@ -71,7 +70,7 @@ const removeMissingImages = async (items) => {
   return results.filter(Boolean);
 };
 
-const normalizeData = async (container: ContainerSet): Promise<ContainerSet> => {
+const normalizeData = async (container) => {
   if (!container?.items) {
     return null;
   }
@@ -85,10 +84,10 @@ const normalizeData = async (container: ContainerSet): Promise<ContainerSet> => 
   return null;
 };
 
-export const getContainerTypes = async (data): Promise<{ collections: ContainerSet; sets: ContainerSet[]; refs: ContainerSet[] }> => {
-  const collections: ContainerSet = {};
-  const sets: ContainerSet[] = [];
-  const refs: ContainerSet[] = [];
+export const getContainerTypes = async (data) => {
+  const collections = {};
+  const sets = [];
+  const refs = [];
 
   for (const container of data.containers) {
     const isRef = !container?.set.items;
@@ -109,7 +108,7 @@ export const getContainerTypes = async (data): Promise<{ collections: ContainerS
   return { collections, sets, refs };
 };
 
-export const fetchRefData = async (container: ContainerSet, callback = noop): Promise<ContainerSet> => {
+export const fetchRefData = async (container, callback = noop) => {
   if (!container) {
     return;
   }

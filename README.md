@@ -1,5 +1,5 @@
 ## Disney Take-Home Assignment
-A minimal, performant tile-based UI built with vanilla Typescript. This project demonstrates core frontend engineering principles, state management, and attention to usability. Optimized for Google Chrome.
+A minimal, performant tile-based UI built with vanilla Javascript. This project demonstrates core frontend engineering principles, state management, and attention to usability. Optimized for Google Chrome.
 
 ## Overview
 
@@ -13,7 +13,6 @@ This project was built to showcase a simple layout for presenting media tiles. T
 - **Data Issues** - In dev mode, data issues are logged to console and can be reported to Sentry or other monitoring services in prod. 
 
 ### Tech Stack
-* [Typescript](https://www.typescriptlang.org): type safety.
 * [Node](https://nodejs.org/en) & [Vite](https://vite.dev/): dev environment and bundler for fast refresh and builds.
 
 ## Notes

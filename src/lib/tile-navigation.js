@@ -21,7 +21,7 @@ export const centerPartialTile = () => {
   }
 };
 
-export const highlightSidways = (step: number) => {
+export const highlightSidways = (step) => {
   const { modalActive, activeItemIndex, setActiveItemIndex } = useStore.getState();
   if (modalActive) {
     return;
@@ -33,7 +33,7 @@ export const highlightSidways = (step: number) => {
   setActiveItemIndex(newItemIndex);
 };
 
-export const highlightUpDown = (step: number) => {
+export const highlightUpDown = (step) => {
   const { loading, totalCategories, modalActive, activeCategoryIndex, bannerActive, setActiveCategoryIndex, setBannerActive } = useStore.getState();
   if (modalActive) {
     return;
@@ -57,30 +57,30 @@ export const highlightUpDown = (step: number) => {
 };
 
 const OFFSET = 100;
-const getVisibleTiles = ($row: HTMLElement): HTMLElement[] => {
+const getVisibleTiles = ($row) => {
   if (!$row) {
     return;
   }
   const rowLeftOffset = $row.getBoundingClientRect().left;
   return Array
     .from($row.children)
-    .filter((tile: HTMLElement) => {
+    .filter((tile) => {
       const { left, right } = tile.getBoundingClientRect();
       return left >= rowLeftOffset - OFFSET && right <= window.innerWidth + OFFSET;
-  }) as HTMLElement[];
+  });
 };
 
-export const visibleIndexFromActiveTile = (): number => {
+export const visibleIndexFromActiveTile = () => {
   const $activeRow = document.activeElement.parentElement;
   try {
     const visibleTiles = getVisibleTiles($activeRow);
-    return visibleTiles.indexOf(document.activeElement as HTMLElement);
+    return visibleTiles.indexOf(document.activeElement);
   } catch (e) {
     consoleLog("visibleIndexFromActiveTile", e.message, "warn")
   }
 };
 
-export const absoluteIndexFromVisible = (newCategoryIndex: number): number =>  {
+export const absoluteIndexFromVisible = (newCategoryIndex) =>  {
   const visiblePosition = visibleIndexFromActiveTile();
   const $targetRow = $(`.slider[data-index="${newCategoryIndex}"]`);
   try {
@@ -109,7 +109,7 @@ export const scrollToGridx = () => {
   });
 };
 
-export const scrollToGridy = (e: UIEvent) => {
+export const scrollToGridy = (e) => {
   const currentScrollTop = e.target?.scrollTop;
   const tileHeight = e.target.children[0].clientHeight;
   const nearestIncrement = Math.round(currentScrollTop / tileHeight) * tileHeight;

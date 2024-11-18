@@ -1,11 +1,10 @@
 import { $, $$, bindEvent, throttle } from "./utils";
-import { ContainerSet } from "./types";
 import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayClick, scrollObserver, updateSelectedItem } from "./events";
 import { scrollToGridx, scrollToGridy } from "./tile-navigation";
 import { tmplBanner, tmplContainer, tmplContainers, tmplModal } from "./templates";
 import useStore from "./store";
-import "/styles/styles.css";
 import { Carousel } from "./carousel";
+import "/styles/styles.css";
 
 export const renderBanner = () => {
   const { collections } = useStore.getState();
@@ -47,7 +46,7 @@ export const renderContainers = () => {
   fetchAndAddNewCategories()
 };
 
-export const renderNewCategory = (index: number) => async (set: ContainerSet) => {
+export const renderNewCategory = (index) => async (set) => {
   if (!set) {
     return;
   }

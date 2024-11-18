@@ -1,13 +1,12 @@
 import { formatImageSrc, getItemId, getItemTitle } from "./helpers";
-import { ContainerSet } from "./types";
 
-const tmplTile = (item, index: number) => (`
+const tmplTile = (item, index) => (`
   <a href="#" class="item-tile" data-id="${getItemId(item)}" data-type="tile" data-index="${index}">
     <img src="${formatImageSrc(item?.assets?.tile.id, 200, 'jpeg')}" alt="${getItemTitle(item)}" width="100" height="50" />
   </a>
 `);
 
-export const tmplContainer = (set, index: number) => (`
+export const tmplContainer = (set, index) => (`
   <div class="category">
     <h4>${getItemTitle(set)}</h4>
     <div class="slider" data-type="slider" data-index="${index}">
@@ -33,7 +32,7 @@ export const tmplContainers = ({ sets, error }) => {
   }
 };
 
-const tmplBannerSlide = (item: ContainerSet, index: number, root: ContainerSet[]) => (`
+const tmplBannerSlide = (item, index, root) => (`
   <li class="carousel-slide" data-index="${index}" aria-label="${index} of ${root.length}">
     <div class="banner-image" style="background-image: url(${formatImageSrc(item.assets.banner.id, 1080, 'jpeg')});"></div>
     <img class="banner-logo" width="600" src="${formatImageSrc(item.assets.logo.id, 600, 'png')}" alt="${getItemTitle(item)}" />
@@ -76,7 +75,7 @@ export const tmplModal = ({ assets, ratings, releases, videoArt }) => (`
   </div>
 `);
 
-export const tmplContainerSkeleton = (index: number) => (`
+export const tmplContainerSkeleton = (index) => (`
   <div class="slider" data-type="slider" data-index="${index}">
     <a href="#" class="item-tile placeholder" data-index="0"></a>
     <a href="#" class="item-tile placeholder" data-index="1"></a>

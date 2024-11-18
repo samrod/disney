@@ -1,5 +1,4 @@
 import { fetchList } from "./api";
-import { StoreState } from "./types";
 import { createStore, set } from "./state";
 import { getContainerTypes } from "./assets";
 import { updateSelectedItem } from "./events";
@@ -117,7 +116,7 @@ const actions = {
   })),
 };
 
-const useStore = createStore<StoreState>({ ...states, ...actions });
+const useStore = createStore({ ...states, ...actions });
 
 let __DEV__;
 // __DEV__ = true;

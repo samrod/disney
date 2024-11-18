@@ -7,7 +7,7 @@ export const getItemId = (item) => {
   return item.contentId || item.collectionId;
 };
 
-export const getItemTitle = (item: unknown) => {
+export const getItemTitle = (item) => {
   if (!item) {
     return null;
   }
@@ -20,7 +20,7 @@ export const getItemTitle = (item: unknown) => {
   );
 };
 
-export const getItemImage = (item: unknown, type: string, aspect = "1.78") => {
+export const getItemImage = (item, type, aspect = "1.78") => {
   if (!item) {
     return null;
   }
@@ -43,6 +43,6 @@ export const getItemImage = (item: unknown, type: string, aspect = "1.78") => {
   return masterId;
 };
 
-export const formatImageSrc = (masterId: string, width = 500, format = "jpeg"): string => {
+export const formatImageSrc = (masterId, width = 500, format = "jpeg") => {
   return `${config.API_ASSETS}/${masterId}/scale?format=${format}&width=${width}&quality=90&scalingAlgorithm=lanczos3`;
 };
