@@ -52,7 +52,7 @@ export const highlightUpDown = (step: number) => {
     return;
   }
   const newCategoryIndex = restrictToRange(activeCategoryIndex + step, loading ? totalCategories : totalCategories - 1);
-  console.log("highlightUpDown", loading, newCategoryIndex);
+  // console.log("highlightUpDown", activeCategoryIndex + step, loading, totalCategories, totalCategories - 1);
   setActiveCategoryIndex(newCategoryIndex);
 };
 

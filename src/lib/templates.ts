@@ -59,20 +59,20 @@ export const tmplModal = ({ assets, ratings, releases, videoArt }) => (`
     <h4 class="info" data-playing="false">
       ${ratings[0].value && (
         `<div class="rating">${ratings[0].value}</div>`
-      )}
+      ) || ''}
       ${releases[0].releaseYear && (
         `<p>${releases[0].releaseYear}</p>`
-      )}
+      ) || ''}
       ${videoArt[0] && (`
         <div class="actions">
           <button class="playButton play button" autofocus>Play</button>
           <button class="playButton pause button">Pause</button>
         </div>
-      `)}
+      `) || ''}
     </h4>
     ${videoArt[0] && (
       `<video class="video" autofocus inline src="${videoArt[0].mediaMetadata.urls[0].url}" />`
-    )}
+    ) || ''}
   </div>
 `);
 

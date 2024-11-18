@@ -87,15 +87,15 @@ export const selectTile = () => {
 const hideModal = () => {
   const { setModalActive } = useStore.getState();
   setModalActive(false);
-  $("#modal").setAttribute("class", "hide");
+  $("#modal").classList.remove("visible");
 };
 
 export const clearModal = () => {
   const { modalActive } = useStore.getState();
   if (!modalActive) {
     const $modal = $("#modal");
+    $modal.classList.remove("active");
     $modal.innerHTML = "";
-    $modal.setAttribute("class", "");
     updateSelectedItem();
   }
 };

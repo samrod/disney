@@ -1,5 +1,5 @@
 ## Disney Take-Home Assignment
-A minimal, performant tile-based UI built with TailwindCSS. This project demonstrates core frontend engineering principles, state management, and attention to usability. Optimized for Google Chrome.
+A minimal, performant tile-based UI built with vanilla Typescript. This project demonstrates core frontend engineering principles, state management, and attention to usability. Optimized for Google Chrome.
 
 ## Overview
 
@@ -9,11 +9,9 @@ This project was built to showcase a simple layout for presenting media tiles. T
 
 - **Smooth UI** – Grid layout and navigation tuned for a straightforward user experience. Further grid and tile alignment improvements would refine the experience.
 - **No Video on Tiles** – Due to poor video art availability, videos aren't displayed in active tiles to preserve a consistent experience.
-- **Styling** – Normally, I’d use styled components or CSS modules. Here, TailwindCSS was chosen for speed and simplicity.
 - **Scalable Styleguide** – In a full production app, I’d create a master style guide with a semantic color palette and unified typography. This approach keeps styles modular, clean, and aligned with brand standards.
 
 ### Tech Stack
-* [TailwindCSS](https://tailwindcss.com/): rapid styling and a clean codebase.
 * [SCSS](https://sass-lang.com/): mature, stable, and powerful professional grade CSS extension language.
 * [Typescript](https://www.typescriptlang.org): type safety.
 * [Node](https://nodejs.org/en) & [Vite](https://vite.dev/): dev environment and bundler for fast refresh and builds.
