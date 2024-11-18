@@ -113,7 +113,7 @@ const actions = {
 
   bumpTotalCategories: () => set((state) => ({
     totalCategories: state.totalCategories + 1,
-    trigger: "totalCategories",
+    trigger: "bumpTotalCategories",
   })),
 };
 

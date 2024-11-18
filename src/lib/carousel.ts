@@ -92,7 +92,6 @@ export class Carousel {
   updateNavClasses() {
     $(".carousel-nav .is-active")?.classList.remove("is-active");
     $(".carousel-nav")?.children[Math.max(0, Math.abs(this.index) - 1)]?.classList.add("is-active");
-    // console.log(this.index, Math.max(0, Math.abs(this.index) - 1));
   }
 
   resetTo(index) {    

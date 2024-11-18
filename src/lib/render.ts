@@ -47,7 +47,7 @@ export const renderContainers = () => {
   fetchAndAddNewCategories()
 };
 
-export const renderNewCategory = (index: number) => (set: ContainerSet) => {
+export const renderNewCategory = (index: number) => async (set: ContainerSet) => {
   if (!set) {
     return;
   }
@@ -60,9 +60,10 @@ export const renderNewCategory = (index: number) => (set: ContainerSet) => {
     { element: $newCategory.querySelectorAll(".slider"), event: "scroll", handler: throttle(scrollToGridx, 100) },
   ].forEach(bindEvent);
   $(".page").appendChild($newCategory.firstElementChild);
-  scrollObserver(".category:last-child", fetchAndAddNewCategories);
+  await scrollObserver(".category:last-child", fetchAndAddNewCategories);
   bumpTotalCategories();
   setLoading(false);
+  await fetchAndAddNewCategories();
 };
 
 export const renderModal = (data) => {

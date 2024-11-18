@@ -127,11 +127,13 @@ const checkIntersectingEntry = (refIndex, refs, callback, observer, target) => a
   }
 };
 
-export const scrollObserver = (target: string, callback = noop) => {
+export const scrollObserver = async (target: string, callback = noop): Promise<void> => {
   const $lastRow = $(target);
   const { refIndex, refs } = useStore.getState();
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(checkIntersectingEntry(refIndex, refs, callback, observer, target));
+  const observer = new IntersectionObserver(async (entries, observer) => {
+    for (const entry of entries) {
+      await checkIntersectingEntry(refIndex, refs, callback, observer, target)(entry);
+    }
   }, {
     threshold: 1
   });
@@ -139,6 +141,7 @@ export const scrollObserver = (target: string, callback = noop) => {
   if ($lastRow) {
     observer.observe($lastRow);
   }
+  return Promise.resolve();
 };
 
 export const fetchAndAddNewCategories = async () => {

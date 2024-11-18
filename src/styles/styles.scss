@@ -17,7 +17,7 @@ body {
   width: 1080px;
   margin-right: auto;
   margin-left: auto;
-  overfow: hidden;
+  overflow: hidden;
   scroll-behavior: smooth;
 }
 
@@ -41,7 +41,7 @@ body {
 .category {
   padding: 0.5rem 0 0.5rem 1rem;
   &:last-child {
-    margin-botom: 50px;
+    margin-bottom: 50px;
   }
   h4 {
     margin-left: 0.5rem;

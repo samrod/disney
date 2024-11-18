@@ -77,7 +77,7 @@ export const tmplModal = ({ assets, ratings, releases, videoArt }) => (`
 `);
 
 export const tmplContainerSkeleton = (index: number) => (`
-  <div class="slider" data-type="slider" data-index="{{index}}"">
+  <div class="slider" data-type="slider" data-index="${index}">
     <a href="#" class="item-tile placeholder" data-index="0"></a>
     <a href="#" class="item-tile placeholder" data-index="1"></a>
     <a href="#" class="item-tile placeholder" data-index="2"></a>

@@ -31,7 +31,6 @@ const getFirstAvailableImageType = async (item, types, aspect = "1.78") => {
     if (isValid) {
       return { type, id: masterId };
     }
-    // consoleLog("getFirstAvailableImageType", `${getItemTitle(item)}: ${type}, ${aspect} ${src}`);
   }
   return null;
 };

@@ -10,9 +10,9 @@ This project was built to showcase a simple layout for presenting media tiles. T
 - **Smooth UI** – Grid layout and navigation tuned for a straightforward user experience. Further grid and tile alignment improvements would refine the experience.
 - **No Video on Tiles** – Due to poor video art availability, videos aren't displayed in active tiles to preserve a consistent experience.
 - **Scalable Styleguide** – In a full production app, I’d create a master style guide with a semantic color palette and unified typography. This approach keeps styles modular, clean, and aligned with brand standards.
+- **Data Issues** - In dev mode, data issues are logged to console and can be reported to Sentry or other monitoring services in prod. 
 
 ### Tech Stack
-* [SCSS](https://sass-lang.com/): mature, stable, and powerful professional grade CSS extension language.
 * [Typescript](https://www.typescriptlang.org): type safety.
 * [Node](https://nodejs.org/en) & [Vite](https://vite.dev/): dev environment and bundler for fast refresh and builds.
 
