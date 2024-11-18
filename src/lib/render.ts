@@ -4,7 +4,7 @@ import { clearModal, fetchAndAddNewCategories, navControl, onPauseClick, onPlayC
 import { scrollToGridx, scrollToGridy } from "./tile-navigation";
 import { tmplBanner, tmplContainer, tmplContainers, tmplModal } from "./templates";
 import useStore from "./store";
-import "/styles/styles.scss";
+import "/styles/styles.css";
 import { Carousel } from "./carousel";
 
 export const renderBanner = () => {
