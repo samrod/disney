@@ -14,7 +14,7 @@ export const restrictToRange = (value, max) => {
   return Math.max(Math.min(value, max), 0);
 };
 
-export function throttle(fn, delay) {
+export function debounce(fn, delay) {
   let timeout;
 
   return function(...args) {
