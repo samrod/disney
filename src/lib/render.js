@@ -21,7 +21,7 @@ export const renderBanner = () => {
     width: 1080,
     speed: 750,
     interval: 6000,
-    autoplay: false,
+    autoplay: true,
   });
 };
 
